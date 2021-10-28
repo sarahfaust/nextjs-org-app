@@ -1,9 +1,6 @@
-import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
 
-const Home: NextPage = () => {
+function Home() {
   return (
     <div>
       <Head>
@@ -17,6 +14,6 @@ const Home: NextPage = () => {
       Shiny new Next.js app mainly for the backend this time!
     </div>
   );
-};
+}
 
 export default Home;
