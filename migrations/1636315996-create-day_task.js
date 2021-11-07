@@ -5,12 +5,12 @@ exports.up = async function (sql) {
 		day_id integer NOT NULL,
 		task_id integer NOT NULL,
 		is_done boolean,
-		CONSTRAINT fk_day
+		CONSTRAINT fk_days
 		FOREIGN KEY (day_id)
-		REFERENCES day(id),
-		CONSTRAINT fk_task
+		REFERENCES days(id),
+		CONSTRAINT fk_tasks
 		FOREIGN KEY (task_id)
-		REFERENCES task(id)
+		REFERENCES tasks(id)
 	);`;
 };
 
