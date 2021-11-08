@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { Container, Heading1 } from '../styles/styles';
 
 function Home() {
   return (
@@ -11,7 +12,9 @@ function Home() {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      Shiny new Next.js app mainly for the backend this time!
+      <Container>
+        <Heading1 data-cy="page-home-heading">Home office companion</Heading1>
+      </Container>
     </div>
   );
 }
