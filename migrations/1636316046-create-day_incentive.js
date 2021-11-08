@@ -6,15 +6,15 @@ exports.up = async function (sql) {
 		day_id integer NOT NULL,
 		incentive_type_id integer NOT NULL,
 		incentive_id integer NOT NULL,
-		CONSTRAINT fk_day
+		CONSTRAINT fk_days
 		FOREIGN KEY (day_id)
-		REFERENCES day(id),
-		CONSTRAINT fk_incentive_type
+		REFERENCES days(id),
+		CONSTRAINT fk_incentive_types
 		FOREIGN KEY (incentive_type_id)
-		REFERENCES incentive_type(id),
-		CONSTRAINT fk_incentive
+		REFERENCES incentive_types(id),
+		CONSTRAINT fk_incentives
 		FOREIGN KEY (incentive_id)
-		REFERENCES incentive(id)
+		REFERENCES incentives(id)
 	);`;
 };
 
