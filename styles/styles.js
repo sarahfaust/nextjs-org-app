@@ -2,8 +2,6 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const globalStyles = css`
-  @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@100;200;300;400;500;600;700&display=swap');
-
   @import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 
   html,
@@ -11,6 +9,7 @@ export const globalStyles = css`
     margin: 0;
     font-family: Barlow, sans-serif;
     background-color: #ffffff;
+    height: 100vh;
   }
 
   a {
@@ -45,8 +44,7 @@ export const componentStyle = css`
 `;
 
 export const Heading1 = styled.h1`
-  margin: 24px;
-  padding: 4px;
+  margin: 24px 0;
   text-transform: capitalize;
   font-size: 1.7rem;
   font-weight: 200;
