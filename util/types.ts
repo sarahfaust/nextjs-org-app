@@ -8,10 +8,8 @@ export type CreateUserType = {
   passwordHash: string;
 };
 
-export type UserWithPasswordHashType = {
+export type UserWithPasswordHashType = CreateUserType & {
   id: number;
-  username: string;
-  passwordHash: string;
 };
 
 export type SessionType = {
@@ -21,14 +19,17 @@ export type SessionType = {
   expires: Date;
 };
 
-export type ProfileType = {
-  id: number;
+export type CreateProfileType = {
   userId: number;
   firstName: string;
   lastName: string;
   location: string;
-  timeStart: TimeRanges;
-  timeEnd: TimeRanges;
+  timeStart: Date;
+  timeEnd: Date;
+};
+
+export type ProfileType = CreateProfileType & {
+  id: number;
 };
 
 export type DayType = {
@@ -56,12 +57,15 @@ export type WinddownType = {
   improve: string;
 };
 
-export type TaskType = {
-  id: number;
+export type CreateTaskType = {
   profileId: number;
   name: string;
   isDone: boolean;
   isToday: boolean;
+};
+
+export type TaskType = CreateTaskType & {
+  id: number;
 };
 
 export type SubtaskType = {
