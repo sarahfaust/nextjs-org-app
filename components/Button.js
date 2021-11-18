@@ -5,14 +5,13 @@ const SquareButton = styled.button`
   color: #292f36;
   border: none;
   margin: ${(props) => props.margin};
-  padding: 12px;
+  padding: 12px 24px;
   border: 1px solid #292f36;
   border-radius: 2px;
   min-width: 40px;
   min-height: 40px;
-  font-weight: bold;
+  font-weight: 600;
   font-family: inherit;
-  box-shadow: 2px 2px 8px 2px rgba(100, 100, 100, 0.1);
   &:hover {
     background-color: lightblue;
   }

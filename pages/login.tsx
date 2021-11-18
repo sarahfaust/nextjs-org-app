@@ -28,7 +28,7 @@ const Input = styled.input`
   font-family: inherit;
 `;
 
-type Props = { refreshUsername: () => void };
+type Props = { updateStatus: () => void };
 
 export default function Login(props: Props) {
   const [username, setUsername] = useState('');
@@ -36,9 +36,9 @@ export default function Login(props: Props) {
   const [errors, setErrors] = useState<Errors>([]);
   const router = useRouter();
 
-  async function login(event: Event) {
+  async function logIn(event: Event) {
     event.preventDefault();
-    const loginResponse = await fetch('/api/login', {
+    const response = await fetch('/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,9 +49,10 @@ export default function Login(props: Props) {
       }),
     });
 
-    const loginJson = (await loginResponse.json()) as LoginResponse;
-    if ('errors' in loginJson) {
-      setErrors(loginJson.errors);
+    const login = (await response.json()) as LoginResponse;
+    if ('errors' in login) {
+      setErrors(login.errors);
+      console.log(login.errors);
       return;
     }
 
@@ -59,7 +60,7 @@ export default function Login(props: Props) {
       typeof router.query.returnTo === 'string' && router.query.returnTo
         ? router.query.returnTo
         : `/`;
-    props.refreshUsername();
+    props.updateStatus();
     router.push(destination);
   }
 
@@ -82,8 +83,14 @@ export default function Login(props: Props) {
             value={password}
             onChange={(event) => setPassword(event.currentTarget.value)}
           />
-          {errors.length > 0 && <div>{errors}</div>}
-          <Button onClick={(event: Event) => login(event)}>Log in</Button>
+          {errors.length > 0 && (
+            <div>
+              {errors.map((error) => (
+                <div key={`error-${error.message}`}>{error.message}</div>
+              ))}
+            </div>
+          )}{' '}
+          <Button onClick={(event: Event) => logIn(event)}>Log in</Button>
         </Form>
       </LoginCard>
     </Container>

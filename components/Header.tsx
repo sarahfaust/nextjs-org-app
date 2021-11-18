@@ -30,7 +30,9 @@ const LogoText = styled.p`
   color: #292f36;
 `;
 
-export default function Header(props) {
+type Props = { username: string; profileId: number; isAuthenticated: boolean };
+
+export default function Header(props: Props) {
   return (
     <HeaderStyle>
       <Navigation>
@@ -41,23 +43,33 @@ export default function Header(props) {
             </Logo>
           </a>
         </Link>
-        <Link href="/signup">
-          <a data-cy="header-signup-link">Sign up</a>
-        </Link>
-        <Link href="/login">
-          <a data-cy="header-login-link">Log in</a>
-        </Link>
-        <Link href="/profile">
+        <div>{props.profileId}</div>
+        <div>{props.isAuthenticated}</div>
+        {!props.isAuthenticated && (
+          <>
+            <Link href="/signup">
+              <a data-cy="header-signup-link">Sign up</a>
+            </Link>
+            <Link href="/login">
+              <a data-cy="header-login-link">Log in</a>
+            </Link>
+          </>
+        )}
+        <Link href={`/profiles/${props.profileId}`}>
           <a data-cy="header-profile-link">Profile</a>
-        </Link>
-        <Link href="/logout">
-          <a data-cy="header-logout-link">Logout</a>
         </Link>
       </Navigation>
       <Navigation>
-        <Link href="/profile">
-          <a data-cy="header-username-link">Username: {props.username}</a>
-        </Link>
+        {props.isAuthenticated && (
+          <>
+            <Link href={`/profiles/${props.profileId}`}>
+              <a data-cy="header-username-link">Username: {props.username}</a>
+            </Link>
+            <a href="/logout" data-cy="header-logout-link">
+              Logout
+            </a>
+          </>
+        )}
       </Navigation>
     </HeaderStyle>
   );

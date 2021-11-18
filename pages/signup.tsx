@@ -28,7 +28,7 @@ const Input = styled.input`
   font-family: inherit;
 `;
 
-type Props = { refreshUsername: () => void; csrfToken: string };
+type Props = { updateStatus: () => void; csrfToken: string };
 
 export default function Signup(props: Props) {
   const [username, setUsername] = useState('');
@@ -38,7 +38,7 @@ export default function Signup(props: Props) {
 
   async function signUp(event: Event) {
     event.preventDefault();
-    const signupResponse = await fetch('/api/signup', {
+    const response = await fetch('/api/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -50,18 +50,14 @@ export default function Signup(props: Props) {
       }),
     });
 
-    const signup = (await signupResponse.json()) as SignupResponse;
+    const signup = (await response.json()) as SignupResponse;
     if ('errors' in signup) {
       setErrors(signup.errors);
       return;
     }
 
-    const destination =
-      typeof router.query.returnTo === 'string' && router.query.returnTo
-        ? router.query.returnTo
-        : `/`;
-    props.refreshUsername();
-    router.push(destination);
+    props.updateStatus();
+    router.push('/profiles');
   }
 
   return (
