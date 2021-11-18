@@ -6,6 +6,8 @@ exports.up = async function (sql) {
 		profile_id integer NOT NULL,
 		incentive_type_id integer,
 		incentive_id integer,
+		time_start timestamptz,
+		time_end timestamptz,
 		CONSTRAINT fk_profiles
 		FOREIGN KEY (profile_id)
 		REFERENCES profiles(id),
