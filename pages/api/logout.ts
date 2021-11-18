@@ -8,10 +8,8 @@ export default async function handler(
   if (req.method === 'GET') {
     if (req.cookies.sessionToken) {
       await deleteSessionByToken(req.cookies.sessionToken);
-
       return res.status(200).send({});
     }
   }
-
   return res.status(405).send({});
 }

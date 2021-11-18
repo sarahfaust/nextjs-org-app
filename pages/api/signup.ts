@@ -66,7 +66,7 @@ export default async function signupHandler(
     const newSession = await createSession(user.id, sessionToken);
     const cookie = createTokenCookie(newSession.token);
 
-    res.status(200).setHeader('set-Cookie', cookie).send({ user: user });
+    res.status(200).setHeader('Set-Cookie', cookie).send({ user: user });
   } catch (err) {
     res.status(500).send({ errors: [{ message: (err as Error).message }] });
   }

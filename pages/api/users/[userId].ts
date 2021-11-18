@@ -1,9 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import {
-  deleteUserById,
-  getUser,
-  updateUserById,
-} from '../../../util/database';
+import { deleteUser, getUser, updateUser } from '../../../util/database';
 import { UserType } from '../../../util/types';
 
 export type UsersResponse = UserType | undefined;
@@ -12,30 +8,29 @@ export default async function userHandler(
   req: NextApiRequest,
   res: NextApiResponse<UsersResponse>,
 ) {
-  console.log('query', req.query);
-  // console.log('body', req.body);
-  // console.log('method', req.method);
+  const body = req.body;
+  const query = req.query;
 
+  // get user
   if (req.method === 'GET') {
-    const user = await getUser(Number(req.query.userId));
-
+    const user = await getUser(Number(query.userId));
     return res.status(200).json(user);
+
+    // delete user
   } else if (req.method === 'DELETE') {
     console.log('query', req.query);
-    // the code for the POST request
-    const deletedUser = await deleteUserById(Number(req.query.userId));
-
+    const deletedUser = await deleteUser(Number(query.userId));
     return res.status(200).json(deletedUser);
+
+    // update user
   } else if (req.method === 'PATCH') {
-    const body = req.body;
-    const query = req.query;
-    const updatedUser = await updateUserById(Number(query.userId), {
+    const updatedUser = await updateUser(Number(query.userId), {
       id: Number(query.userId),
       username: body.userName,
     });
-
     return res.status(200).json(updatedUser);
   }
 
+  // 405 is code for method not allowed
   return res.status(405);
 }
