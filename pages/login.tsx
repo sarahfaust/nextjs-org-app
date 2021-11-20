@@ -1,9 +1,15 @@
 import styled from '@emotion/styled';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { Button } from '../components/Button';
-import { Container, Heading2, LoginCard } from '../styles/styles';
+import {
+  Container,
+  ErrorCard,
+  ErrorMessage,
+  Heading2,
+  LoginCard,
+} from '../styles/styles';
 import { Errors } from '../util/types';
 import { LoginResponse } from './api/login';
 
@@ -35,6 +41,13 @@ export default function Login(props: Props) {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
   const router = useRouter();
+  const inputFocus = useRef<HTMLInputElement>(null);
+
+  useLayoutEffect(() => {
+    if (inputFocus.current !== null) {
+      inputFocus.current.focus();
+    }
+  }, [inputFocus]);
 
   async function logIn(event: Event) {
     event.preventDefault();
@@ -71,6 +84,7 @@ export default function Login(props: Props) {
         <Form>
           <Label htmlFor="username">Username</Label>
           <Input
+            ref={inputFocus}
             id="username"
             name="username"
             value={username}
@@ -80,16 +94,19 @@ export default function Login(props: Props) {
           <Input
             id="password"
             name="password"
+            type="password"
             value={password}
             onChange={(event) => setPassword(event.currentTarget.value)}
           />
           {errors.length > 0 && (
-            <div>
+            <ErrorCard>
               {errors.map((error) => (
-                <div key={`error-${error.message}`}>{error.message}</div>
+                <ErrorMessage key={`error-${error.message}`}>
+                  {error.message}
+                </ErrorMessage>
               ))}
-            </div>
-          )}{' '}
+            </ErrorCard>
+          )}
           <Button onClick={(event: Event) => logIn(event)}>Log in</Button>
         </Form>
       </LoginCard>

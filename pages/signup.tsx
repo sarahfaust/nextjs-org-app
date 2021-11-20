@@ -1,9 +1,15 @@
 import styled from '@emotion/styled';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { Button } from '../components/Button';
-import { Container, Heading2, LoginCard } from '../styles/styles';
+import {
+  Container,
+  ErrorCard,
+  ErrorMessage,
+  Heading2,
+  LoginCard,
+} from '../styles/styles';
 import { Errors } from '../util/types';
 import { SignupResponse } from './api/signup';
 
@@ -35,6 +41,13 @@ export default function Signup(props: Props) {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
   const router = useRouter();
+  const inputFocus = useRef<HTMLInputElement>(null);
+
+  useLayoutEffect(() => {
+    if (inputFocus.current !== null) {
+      inputFocus.current.focus();
+    }
+  }, [inputFocus]);
 
   async function signUp(event: Event) {
     event.preventDefault();
@@ -76,15 +89,18 @@ export default function Signup(props: Props) {
           <Input
             id="password"
             name="password"
+            type="password"
             value={password}
             onChange={(event) => setPassword(event.currentTarget.value)}
           />
           {errors.length > 0 && (
-            <div>
+            <ErrorCard>
               {errors.map((error) => (
-                <div key={`error-${error.message}`}>{error.message}</div>
+                <ErrorMessage key={`error-${error.message}`}>
+                  {error.message}
+                </ErrorMessage>
               ))}
-            </div>
+            </ErrorCard>
           )}
           <Button onClick={(event: Event) => signUp(event)}>Sign up</Button>
         </Form>
