@@ -72,7 +72,7 @@ export default function Login(props: Props) {
     const destination =
       typeof router.query.returnTo === 'string' && router.query.returnTo
         ? router.query.returnTo
-        : `/`;
+        : `/dashboard`;
     props.updateStatus();
     router.push(destination);
   }
