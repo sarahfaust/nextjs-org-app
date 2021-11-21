@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { TaskType } from '../util/types';
 import Footer from './Footer';
 import Header from './Header';
 import Sidebar from './Sidebar';
@@ -16,8 +17,23 @@ const Content = styled.div`
   height: 100vh;
 `;
 
-export default function Layout(props) {
-  console.log('layout auth', props.isAuthenticated);
+const Main = styled.main`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow-y: scroll;
+  overflow-x: hidden;
+`;
+
+type Props = {
+  isAuthenticated: boolean;
+  tasks: TaskType[];
+  username: string;
+  profileId: number;
+  children: JSX.Element;
+};
+
+export default function Layout(props: Props) {
   return (
     <LayoutContainer>
       {props.isAuthenticated && <Sidebar tasks={props.tasks} />}
@@ -27,7 +43,7 @@ export default function Layout(props) {
           username={props.username}
           profileId={props.profileId}
         />
-        <main>{props.children}</main>
+        <Main>{props.children}</Main>
         <Footer />
       </Content>
     </LayoutContainer>
