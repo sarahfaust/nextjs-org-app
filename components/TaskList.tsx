@@ -1,26 +1,46 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { Heading2 } from '../styles/styles';
+import { Check, Circle } from 'react-feather';
 import { TaskType } from '../util/types';
 
 const TaskListContainer = styled.div`
   width: 200px;
-  color: black;
 `;
 
-type Props = { tasks: TaskType[]; heading: string };
+const TaskListItem = styled.li`
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  &:hover {
+    background-color: #f1f1f1;
+  }
+`;
+
+const TaskListLink = styled.a`
+  padding: 8px;
+  width: 100%;
+  color: #333333;
+`;
+
+type Props = { tasks: TaskType[] };
 
 export default function TaskList(props: Props) {
   return (
     <TaskListContainer>
-      <Heading2>{props.heading}</Heading2>
       <ul>
         {props.tasks.map((task) => (
-          <li key={task.id}>
-            <Link href={`/tasks/${task.id}`}>
-              <a data-cy={`sidebar-task-link-${task.id}`}>{task.name}</a>
+          <TaskListItem key={task.id}>
+            {task.isDone ? (
+              <Check strokeWidth="1px" />
+            ) : (
+              <Circle strokeWidth="1px" />
+            )}
+            <Link href={`/tasks/${task.id}`} passHref>
+              <TaskListLink data-cy={`sidebar-task-link-${task.id}`}>
+                {task.name}
+              </TaskListLink>
             </Link>
-          </li>
+          </TaskListItem>
         ))}
       </ul>
     </TaskListContainer>

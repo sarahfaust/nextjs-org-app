@@ -14,6 +14,12 @@ const Navigation = styled.nav`
   margin: 2rem;
 `;
 
+const NavLink = styled.a`
+  &:hover {
+    color: darkgray;
+  }
+`;
+
 const Logo = styled.div`
   display: flex;
   flex-direction: column;
@@ -36,38 +42,38 @@ export default function Header(props: Props) {
   return (
     <HeaderStyle>
       <Navigation>
-        <Link href="/">
-          <a>
+        <Link href="/dashboard" passHref>
+          <NavLink>
             <Logo>
               <LogoText>MINDFULL</LogoText>
             </Logo>
-          </a>
+          </NavLink>
         </Link>
-        <div>{props.profileId}</div>
-        <div>{props.isAuthenticated}</div>
         {!props.isAuthenticated && (
           <>
-            <Link href="/signup">
-              <a data-cy="header-signup-link">Sign up</a>
+            <Link href="/signup" passHref>
+              <NavLink data-cy="header-signup-link">Sign up</NavLink>
             </Link>
-            <Link href="/login">
-              <a data-cy="header-login-link">Log in</a>
+            <Link href="/login" passHref>
+              <NavLink data-cy="header-login-link">Log in</NavLink>
             </Link>
           </>
         )}
-        <Link href={`/profiles/${props.profileId}`}>
-          <a data-cy="header-profile-link">Profile</a>
-        </Link>
       </Navigation>
       <Navigation>
         {props.isAuthenticated && (
           <>
-            <Link href={`/profiles/${props.profileId}`}>
-              <a data-cy="header-username-link">Username: {props.username}</a>
+            <Link href={`/profiles/${props.profileId}`} passHref>
+              <NavLink data-cy="header-profile-link">Profile</NavLink>
             </Link>
-            <a href="/logout" data-cy="header-logout-link">
+            <Link href={`/profiles/${props.profileId}`} passHref>
+              <NavLink data-cy="header-username-link">
+                Username: {props.username}
+              </NavLink>
+            </Link>
+            <NavLink href="/logout" data-cy="header-logout-link">
               Logout
-            </a>
+            </NavLink>
           </>
         )}
       </Navigation>

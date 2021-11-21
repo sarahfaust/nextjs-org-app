@@ -1,23 +1,21 @@
 import styled from '@emotion/styled';
 
-const SquareButton = styled.button`
-  background-color: none;
+const Btn = styled.button`
+  background-color: lightblue;
   color: #292f36;
-  border: none;
   margin: ${(props) => props.margin};
   padding: 12px 24px;
-  border: 1px solid #292f36;
-  border-radius: 2px;
+  border: none;
+  border-radius: 20px;
   min-width: 40px;
   min-height: 40px;
   font-weight: 600;
   font-family: inherit;
   &:hover {
-    background-color: lightblue;
+    background-color: lightsteelblue;
   }
   &:active {
     transform: scale(0.98);
-    box-shadow: 2px 2px 4px 2px rgba(100, 100, 100, 0.2);
   }
   &:disabled {
     background-color: lightgray;
@@ -26,13 +24,13 @@ const SquareButton = styled.button`
 
 export function Button(props) {
   return (
-    <SquareButton
+    <Btn
       onClick={props.onClick}
       margin={props.margin}
       disabled={props.disabled}
       data-cy={props.dataCy}
     >
       {props.children}
-    </SquareButton>
+    </Btn>
   );
 }
