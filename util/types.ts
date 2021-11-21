@@ -68,11 +68,14 @@ export type TaskType = CreateTaskType & {
   id: number;
 };
 
-export type SubtaskType = {
-  id: number;
+export type CreateSubtaskType = {
   taskId: number;
   name: string;
   isDone: boolean;
+};
+
+export type SubtaskType = CreateSubtaskType & {
+  id: number;
 };
 
 export type IncentiveTypeType = {

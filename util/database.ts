@@ -4,6 +4,7 @@ import postgres from 'postgres';
 import {
   BreakType,
   CreateProfileType,
+  CreateSubtaskType,
   CreateTaskType,
   CreateUserType,
   DayType,
@@ -351,8 +352,8 @@ export async function deleteTask(id: number) {
 }
 
 // SUBTASK
-export async function getSubtasks(taskId: number) {
-  const subtasks = await sql<[SubtaskType]>`
+export async function getSubtasksByTaskId(taskId: number) {
+  const subtasks = await sql<SubtaskType[]>`
     SELECT
       *
     FROM
@@ -360,7 +361,63 @@ export async function getSubtasks(taskId: number) {
     WHERE
       task_id = ${taskId};
   `;
-  return camelcaseKeys(subtasks[0]);
+  return subtasks.map((subtask) => {
+    return camelcaseKeys(subtask);
+  });
+}
+
+export async function getSubtaskBySubtaskId(taskId: number) {
+  const [subtask] = await sql<[SubtaskType]>`
+    SELECT
+      *
+    FROM
+      subtasks
+    WHERE
+      id = ${taskId};
+  `;
+  return camelcaseKeys(subtask);
+}
+
+export async function createSubtask(subtaskToCreate: CreateSubtaskType) {
+  const [subtask] = await sql<[SubtaskType | undefined]>`
+    INSERT INTO subtasks
+      (task_id, name, is_done)
+    VALUES
+      (${subtaskToCreate.taskId}, ${subtaskToCreate.name}, ${subtaskToCreate.isDone})
+    RETURNING
+      id, task_id, name, is_done;
+  `;
+  return subtask && camelcaseKeys(subtask);
+}
+
+export async function updateSubtask(
+  id: number,
+  subtaskToUpdate: CreateSubtaskType,
+) {
+  const [subtask] = await sql<[SubtaskType | undefined]>`
+    UPDATE
+      subtasks
+    SET
+      name = ${subtaskToUpdate.name}, is_done = ${subtaskToUpdate.isDone}
+    WHERE
+      id = ${id}
+    RETURNING
+      id, task_id, name, is_done;
+  `;
+  return subtask && camelcaseKeys(subtask);
+}
+
+export async function deleteSubtask(id: number) {
+  const [subtask] = await sql<[SubtaskType | undefined]>`
+    DELETE FROM
+      subtasks
+    WHERE
+      id = ${id}
+    RETURNING
+      id,
+      name;
+  `;
+  return subtask && camelcaseKeys(subtask);
 }
 
 // INCENTIVE TYPE
