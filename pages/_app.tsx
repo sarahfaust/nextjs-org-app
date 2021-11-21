@@ -19,22 +19,17 @@ function App({ Component, pageProps }: AppProps) {
     const response = await fetch('/api/status');
     const status = await response.json();
     if ('errors' in status) {
-      console.log(status.errors);
+      console.log('status has error', status.errors);
       setUsername('');
       setIsAuthenticated(false);
       return;
     }
     console.log(status);
     setUsername(status.user.username);
-    // setUserId(status.user.id);
     setFirstName(status.profile.firstName);
     setProfileId(status.profile.id);
     setIsAuthenticated(true);
   }, []);
-
-  useEffect(() => {
-    updateStatus();
-  }, [updateStatus]);
 
   const updateTasks = useCallback(async () => {
     const response = await fetch('/api/tasks', {
@@ -51,6 +46,10 @@ function App({ Component, pageProps }: AppProps) {
     }
     setTasks(allTasks);
   }, []);
+
+  useEffect(() => {
+    updateStatus();
+  }, [updateStatus]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -74,6 +73,7 @@ function App({ Component, pageProps }: AppProps) {
           username={username}
           profileId={profileId}
           firstName={firstName}
+          tasks={tasks}
           updateStatus={updateStatus}
           updateTasks={updateTasks}
         />

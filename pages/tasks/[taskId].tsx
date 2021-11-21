@@ -1,46 +1,31 @@
-import styled from '@emotion/styled';
 import { GetServerSidePropsContext } from 'next';
-// import { useRouter } from 'next/dist/client/router';
-import { Button } from '../../components/Button';
-import { Container } from '../../styles/styles';
-import { TaskType } from '../../util/types';
+import { useRouter } from 'next/dist/client/router';
+import TaskDetails from '../../components/TaskDetails';
+import { getSubtasksByTaskId } from '../../util/database';
+import { SubtaskType, TaskType } from '../../util/types';
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-width: 640px;
-`;
-
-const Label = styled.label`
-  margin-bottom: 6px;
-  font-family: inherit;
-  font-weight: 400;
-`;
-
-const Input = styled.input`
-  margin-bottom: 24px;
-  padding: 8px;
-  height: 36px;
-  min-width: 240px;
-  font-family: inherit;
-`;
-
-type Props = { task: TaskType };
+type Props = {
+  profileId: number;
+  task: TaskType;
+  subtasks: SubtaskType[] | null;
+  updateTasks: () => void;
+};
 
 export default function Task(props: Props) {
-  // const router = useRouter();
+  const router = useRouter();
 
-  function handleSubmit() {}
+  function updateTask() {
+    router.replace(router.asPath);
+  }
 
   return (
-    <Container>
-      <Form>
-        <Label>Task</Label>
-        <Input value={props.task.name} />
-        <Button onClick={handleSubmit}>Save</Button>
-      </Form>
-    </Container>
+    <TaskDetails
+      profileId={props.profileId}
+      task={props.task}
+      subtasks={props.subtasks}
+      updateTasks={props.updateTasks}
+      updateTask={updateTask}
+    />
   );
 }
 
@@ -51,6 +36,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const sessionToken = context.req.cookies.sessionToken;
   const session = await getValidSessionByToken(sessionToken);
   const task = await getTaskByTaskId(Number(context.query.taskId));
+  const subtasks = await getSubtasksByTaskId(Number(context.query.taskId));
 
   if (!session) {
     return {
@@ -61,6 +47,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
   return {
-    props: { task: task },
+    props: { task: task, subtasks: subtasks },
   };
 }

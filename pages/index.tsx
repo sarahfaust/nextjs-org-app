@@ -1,16 +1,24 @@
+import styled from '@emotion/styled';
 import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
 import { Button } from '../components/Button';
-import { Container, Heading1 } from '../styles/styles';
+import { Container } from '../styles/styles';
 
-type Props = { firstName: string; isAuthenticated: boolean };
+const Text = styled.div`
+  margin: 24px 0;
+`;
 
-export default function Home(props: Props) {
+export default function Home() {
   const router = useRouter();
 
-  function handleNewTask(event: Event) {
+  function handleLogin(event: Event) {
     event.preventDefault();
-    router.push('/tasks');
+    router.push('/login');
+  }
+
+  function handleSignup(event: Event) {
+    event.preventDefault();
+    router.push('/signup');
   }
 
   return (
@@ -24,20 +32,10 @@ export default function Home(props: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container>
-        <Heading1 data-cy="page-home-heading">Dashboard</Heading1>
-        {props.isAuthenticated ? (
-          <>
-            <div>
-              Hi, {props.firstName}! You are logged in and ready to start. Add a
-              new task to get started.
-            </div>
-            <Button onClick={(event: Event) => handleNewTask(event)}>
-              Add new task
-            </Button>
-          </>
-        ) : (
-          <div>You are currently not logged in.</div>
-        )}
+        <Text>You are currently not logged in.</Text>
+        <Button onClick={(event: Event) => handleLogin(event)}>Log in</Button>
+        <Text>If you don't have an account yet, you can register here:</Text>
+        <Button onClick={(event: Event) => handleSignup(event)}>Sign up</Button>
       </Container>
     </div>
   );

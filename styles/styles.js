@@ -16,9 +16,6 @@ export const globalStyles = css`
     color: #333333;
     text-decoration: none;
     cursor: pointer;
-    &:hover {
-      color: darkgray;
-    }
   }
 
   li {
@@ -62,7 +59,7 @@ export const Container = styled.section`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 0 3rem;
+  padding: 0 2rem;
 `;
 
 export const RowCard = styled.div`
@@ -91,7 +88,7 @@ export const LoginCard = styled.div`
   align-items: stretch;
   padding: 48px;
   margin: 36px;
-  max-width: 480px;
+  max-width: 560px;
   background-color: whitesmoke;
 `;
 
@@ -99,4 +96,50 @@ export const TextStyle = styled.p`
   margin-bottom: 12px;
   line-height: 1.5;
   max-width: 320px;
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+export const Label = styled.label`
+  margin-bottom: 6px;
+  font-family: inherit;
+  font-weight: 400;
+`;
+
+export const Input = styled.input`
+  margin-bottom: 24px;
+  padding: 8px;
+  height: 36px;
+  min-width: 240px;
+  font-family: inherit;
+`;
+
+export const InputNoMargin = styled.input`
+  padding: 8px;
+  height: 36px;
+  min-width: 240px;
+  font-family: inherit;
+`;
+
+export const Checkbox = styled.input`
+  margin-right: 24px;
+  padding: 8px;
+`;
+
+export const ErrorMessage = styled.div`
+  padding: 12px;
+`;
+
+export const ErrorCard = styled.div`
+  background-color: lightpink;
+  border-radius: 4px;
+  margin-bottom: 24px;
+`;
+
+export const HiddenButton = styled.button`
+  display: none;
 `;

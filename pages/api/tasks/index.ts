@@ -21,7 +21,6 @@ export default async function tasksHandler(
     // TODO: pass profile id to get only tasks connected to the profile
     // instead of all tasks in the database
     const tasks = await getTasksByProfileId(1);
-    console.log('all the tasks', tasks);
     return res.status(200).json(tasks);
 
     // POST for new task
