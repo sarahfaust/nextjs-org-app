@@ -1,4 +1,4 @@
-import { connectOneTimeToDatabase } from './util/database';
+const { connectOneTimeToDatabase } = require('./util/database');
 
 connectOneTimeToDatabase();
 
