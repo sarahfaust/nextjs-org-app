@@ -20,8 +20,6 @@ import {
   WinddownType,
 } from './types';
 
-dotenvSafe.config();
-
 module.exports = function setPostgresDefaultsOnHeroku() {
   if (process.env.DATABASE_URL) {
     const { parse } = require('pg-connection-string');
@@ -36,6 +34,8 @@ module.exports = function setPostgresDefaultsOnHeroku() {
     process.env.PGPASSWORD = password;
   }
 };
+
+dotenvSafe.config();
 
 declare module globalThis {
   // eslint-disable-next-line @typescript-eslint/naming-convention
