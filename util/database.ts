@@ -42,7 +42,7 @@ declare module globalThis {
   let __postgresSqlClient: ReturnType<typeof postgres> | undefined;
 }
 
-function connectOneTimeToDatabase() {
+export function connectOneTimeToDatabase() {
   let sql;
   if (process.env.NODE_ENV === 'production') {
     sql = postgres({ ssl: { rejectUnauthorized: false } });
