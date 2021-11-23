@@ -1,4 +1,4 @@
-import setPostgresDefaultsOnHeroku from './util/node-heroku-postgres-env-vars';
+const setPostgresDefaultsOnHeroku = require('./util/node-heroku-postgres-env-vars');
 
 setPostgresDefaultsOnHeroku();
 
@@ -8,4 +8,4 @@ if (process.env.NODE_ENV === 'production') {
   options.ssl = { rejectUnauthorized: false };
 }
 
-export default options;
+module.exports = options;

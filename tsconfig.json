@@ -29,6 +29,5 @@
     "**/*.cjs",
     "**/*.mjs"
   ],
-  "exclude": ["node_modules", "build"],
-  "module": "ES2020"
+  "exclude": ["node_modules", "build"]
 }
