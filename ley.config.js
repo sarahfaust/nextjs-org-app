@@ -8,4 +8,4 @@ if (process.env.NODE_ENV === 'production') {
   options.ssl = { rejectUnauthorized: false };
 }
 
-module.exports = options;
+export default options;

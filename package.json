@@ -70,5 +70,6 @@
   "cacheDirectories": [
     ".next/cache"
   ],
-  "type": "module"
+  "type": "module",
+  "exports": "./index.js"
 }
