@@ -34,7 +34,8 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-feather": "^2.0.9",
-    "superjson": "^1.8.0"
+    "superjson": "^1.8.0",
+    "ley": "^0.7.1"
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.15.8",
@@ -60,7 +61,6 @@
     "eslint-plugin-react-hooks": "4.2.0",
     "eslint-plugin-testing-library": "5.0.0",
     "eslint-plugin-unicorn": "37.0.1",
-    "ley": "^0.7.1",
     "typescript": "4.4.4"
   },
   "resolutions": {
