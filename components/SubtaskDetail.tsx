@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/dist/client/router';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { Check, Circle, Trash } from 'react-feather';
 import { SubtasksResponse } from '../pages/api/subtasks';
 import { SubtaskResponse } from '../pages/api/subtasks/[subtaskId]';
@@ -78,9 +78,9 @@ export default function SubtaskDetail(props: Props) {
       setSubtaskName(props.subtask.name);
       setIsDone(props.subtask.isDone);
     }
-  }, []);
+  }, [props.subtask]);
 
-  async function saveSubtask(event: Event) {
+  async function saveSubtask(event: MouseEvent) {
     event.preventDefault();
 
     if (!subtaskName || subtaskName.trim().length === 0) {
@@ -118,7 +118,7 @@ export default function SubtaskDetail(props: Props) {
     props.updateTasks();
   }
 
-  async function deleteSubtask(event: Event) {
+  async function deleteSubtask(event: MouseEvent) {
     event.preventDefault();
 
     if (props.subtask) {
@@ -147,7 +147,7 @@ export default function SubtaskDetail(props: Props) {
         {isDone ? (
           <IconButton
             aria-label="Uncheck subtask"
-            onClick={(event: Event) => {
+            onClick={(event: MouseEvent) => {
               event.preventDefault();
               console.log('before set', isDone);
               setIsDone((prev) => !prev);
@@ -164,7 +164,7 @@ export default function SubtaskDetail(props: Props) {
         ) : (
           <IconButton
             aria-label="Check subtask"
-            onClick={(event: Event) => {
+            onClick={(event: MouseEvent) => {
               event.preventDefault();
               console.log('before set', isDone);
               setIsDone((prev) => !prev);
@@ -190,7 +190,7 @@ export default function SubtaskDetail(props: Props) {
           <HiddenButton
             aria-label="Save task"
             type="submit"
-            onClick={(event: Event) => {
+            onClick={(event: MouseEvent) => {
               saveSubtask(event);
             }}
           />
@@ -200,7 +200,7 @@ export default function SubtaskDetail(props: Props) {
             <IconButton
               aria-label="Delete subtask"
               type="submit"
-              onClick={(event: Event) => deleteSubtask(event)}
+              onClick={(event: MouseEvent) => deleteSubtask(event)}
             >
               <Trash
                 aria-hidden="true"

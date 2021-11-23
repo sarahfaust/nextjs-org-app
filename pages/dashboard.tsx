@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { GetServerSidePropsContext } from 'next';
+// import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useState } from 'react';
 import { Button } from '../components/Button';
@@ -21,7 +21,7 @@ export default function Dashboard(props: Props) {
     setTaskCount(props.tasks.length);
     setDoneTasks(props.tasks.filter((task) => task.isDone).length);
     setOpenTasks(props.tasks.filter((task) => !task.isDone).length);
-  });
+  }, [props.tasks]);
 
   const router = useRouter();
 

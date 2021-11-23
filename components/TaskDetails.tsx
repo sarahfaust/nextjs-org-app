@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { useRouter } from 'next/dist/client/router';
-import { useEffect, useState } from 'react';
+// import { useRouter } from 'next/dist/client/router';
+import { MouseEvent, useEffect, useState } from 'react';
 import {
   Calendar,
   CheckCircle,
@@ -10,13 +10,7 @@ import {
   Trash,
 } from 'react-feather';
 import { TaskResponse } from '../pages/api/tasks/[taskId]';
-import {
-  Container,
-  ErrorCard,
-  ErrorMessage,
-  Form,
-  HiddenButton,
-} from '../styles/styles';
+import { ErrorCard, ErrorMessage, Form, HiddenButton } from '../styles/styles';
 import { Errors, SubtaskType, TaskType } from '../util/types';
 import SubtaskDetail from './SubtaskDetail';
 
@@ -90,23 +84,25 @@ type Props = {
 
 export default function TaskDetails(props: Props) {
   const [taskName, setTaskName] = useState('');
+  const [taskId, setTaskId] = useState(0);
   const [isDone, setIsDone] = useState(false);
   const [isToday, setIsToday] = useState(false);
   const [errors, setErrors] = useState<Errors>([]);
   const [taskNameError, setTaskNameError] = useState('');
   const [newSubtask, setNewSubtask] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     if (props.task) {
       setTaskName(props.task.name);
+      setTaskId(props.task.id);
       setIsDone(props.task.isDone);
       setIsToday(props.task.isToday);
       setNewSubtask(false);
     }
   }, [props.task]);
 
-  async function saveTask(event: Event) {
+  async function saveTask(event: MouseEvent) {
     event.preventDefault();
 
     if (!taskName || taskName.trim().length === 0) {
@@ -145,12 +141,12 @@ export default function TaskDetails(props: Props) {
     } */
   }
 
-  function addSubtask(event: Event) {
+  function addSubtask(event: MouseEvent) {
     event.preventDefault();
     setNewSubtask(true);
   }
 
-  async function deleteTask(event: Event) {
+  async function deleteTask(event: MouseEvent) {
     event.preventDefault();
 
     if (props.task) {
@@ -186,7 +182,7 @@ export default function TaskDetails(props: Props) {
           <HiddenButton
             aria-label="Save task"
             type="submit"
-            onClick={(event: Event) => {
+            onClick={(event: MouseEvent) => {
               saveTask(event);
             }}
           />
@@ -194,7 +190,7 @@ export default function TaskDetails(props: Props) {
             <IconButton
               aria-label="Uncheck task"
               aria-checked={isDone}
-              onClick={(event: Event) => {
+              onClick={(event: MouseEvent) => {
                 event.preventDefault();
                 setIsDone((prev) => !prev);
                 saveTask(event);
@@ -210,7 +206,7 @@ export default function TaskDetails(props: Props) {
             <IconButton
               aria-label="Check task"
               aria-checked={isDone}
-              onClick={(event: Event) => {
+              onClick={(event: MouseEvent) => {
                 setIsDone((prev) => !prev);
                 saveTask(event);
               }}
@@ -225,13 +221,13 @@ export default function TaskDetails(props: Props) {
           </ErrorCard>
         )}
       </Form>
-      {props.subtasks && props.subtasks.length > 0 && props.task && (
+      {props.subtasks && props.subtasks.length > 0 && taskId !== 0 && (
         <>
           {props.subtasks.map((subtask) => (
             <li key={subtask.id}>
               <SubtaskDetail
                 subtask={subtask}
-                taskId={props.task.id}
+                taskId={taskId}
                 updateTasks={props.updateTask}
               />
             </li>
@@ -249,7 +245,7 @@ export default function TaskDetails(props: Props) {
         {props.task && (
           <IconButton
             aria-label="Add subtask"
-            onClick={(event: Event) => addSubtask(event)}
+            onClick={(event: MouseEvent) => addSubtask(event)}
           >
             <Plus aria-hidden="true" focusable="false" strokeWidth="1px" />
           </IconButton>
@@ -282,13 +278,13 @@ export default function TaskDetails(props: Props) {
         )}
         <IconButton
           aria-label="Delete task"
-          onClick={(event: Event) => deleteTask(event)}
+          onClick={(event: MouseEvent) => deleteTask(event)}
         >
           <Trash aria-hidden="true" focusable="false" strokeWidth="1px" />
         </IconButton>
         <IconButton
           aria-label="Save task"
-          onClick={(event: Event) => {
+          onClick={(event: MouseEvent) => {
             saveTask(event);
           }}
         >
