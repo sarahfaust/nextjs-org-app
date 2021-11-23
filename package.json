@@ -69,5 +69,6 @@
   },
   "cacheDirectories": [
     ".next/cache"
-  ]
+  ],
+  "type": "module"
 }
