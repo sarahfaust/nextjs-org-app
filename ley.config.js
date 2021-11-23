@@ -1,6 +1,6 @@
-const { connectOneTimeToDatabase } = require('./util/database');
+import setPostgresDefaultsOnHeroku from './util/heroku-postgres';
 
-connectOneTimeToDatabase();
+setPostgresDefaultsOnHeroku();
 
 const options = {};
 
