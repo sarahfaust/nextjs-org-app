@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import TaskDetails from '../../components/TaskDetails';
+import { Container } from '../../styles/styles';
 import { getSubtasksByTaskId } from '../../util/database';
 import { SubtaskType, TaskType } from '../../util/types';
 
@@ -19,13 +20,15 @@ export default function Task(props: Props) {
   }
 
   return (
-    <TaskDetails
-      profileId={props.profileId}
-      task={props.task}
-      subtasks={props.subtasks}
-      updateTasks={props.updateTasks}
-      updateTask={updateTask}
-    />
+    <Container>
+      <TaskDetails
+        profileId={props.profileId}
+        task={props.task}
+        subtasks={props.subtasks}
+        updateTasks={props.updateTasks}
+        updateTask={updateTask}
+      />
+    </Container>
   );
 }
 
