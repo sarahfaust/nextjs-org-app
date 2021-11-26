@@ -58,7 +58,6 @@ export default function Profile(props: Props) {
 
   async function updateProfile(event: Event) {
     event.preventDefault();
-    console.log('sending update');
     const response = await fetch(`/api/profiles/${props.profile.id}`, {
       method: 'PATCH',
       headers: {
@@ -166,7 +165,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   return {
     props: {
-      profile: JSON.parse(JSON.stringify(profile)),
+      profile: profile,
     },
   };
 }

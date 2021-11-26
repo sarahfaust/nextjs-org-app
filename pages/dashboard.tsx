@@ -33,8 +33,6 @@ export default function Dashboard(props: Props) {
     router.push('/tasks/new');
   }
 
-  console.log('tasks', props.tasks);
-
   return (
     <Container>
       <Heading1 data-cy="page-home-heading">Dashboard</Heading1>

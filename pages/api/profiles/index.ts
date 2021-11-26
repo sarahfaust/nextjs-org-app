@@ -9,11 +9,9 @@ export default async function profilesHandler(
   res: NextApiResponse<ProfilesReponse>,
 ) {
   const body = req.body;
-  console.log('profiles api');
 
   // POST for new profile
   if (req.method === 'POST') {
-    console.log('creating profile in api', body);
     const profile = await createProfile({
       userId: body.userId,
       firstName: body.firstName,
@@ -24,13 +22,11 @@ export default async function profilesHandler(
     });
 
     if (!profile) {
-      console.log('if');
       res
         .status(400)
         .send({ errors: [{ message: 'Profile could not be created.' }] });
       return;
     } else {
-      console.log('else');
       return res.status(200).json(profile);
     }
   }

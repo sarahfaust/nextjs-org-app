@@ -31,13 +31,11 @@ export default async function profileHandler(
 
     // delete profile
   } else if (req.method === 'DELETE') {
-    console.log('query', query);
     const deletedProfile = await deleteProfile(Number(req.query.profileId));
     return res.status(200).json(deletedProfile);
 
     // update profile
   } else if (req.method === 'PATCH') {
-    console.log('patch request body', body);
     const updatedProfile = await updateProfile(Number(query.profileId), {
       userId: Number(body.userId),
       firstName: body.firstName,

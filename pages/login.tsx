@@ -70,7 +70,6 @@ export default function Login() {
     const login = (await response.json()) as LoginResponse;
     if ('errors' in login) {
       setErrors(login.errors);
-      console.log(login.errors);
       return;
     }
 

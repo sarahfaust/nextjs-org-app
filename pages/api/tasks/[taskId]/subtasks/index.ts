@@ -7,11 +7,7 @@ import {
 } from '../../../../../util/database';
 import { Errors, SubtaskType } from '../../../../../util/types';
 
-export type SubtasksResponse =
-  | { errors: Errors }
-  | SubtaskType[]
-  | SubtaskType
-  | undefined;
+export type SubtasksResponse = { errors: Errors } | SubtaskType[] | SubtaskType;
 
 export default async function subtasksHandler(
   req: NextApiRequest,
@@ -22,9 +18,6 @@ export default async function subtasksHandler(
   const sessionToken = req.cookies.sessionToken;
   const session = await getValidSessionByToken(sessionToken);
   const profile = await getProfileBySessionToken(sessionToken);
-
-  console.log('body from subtasks api', body);
-  console.log('query from subtasks api', req.query);
 
   if (!session) {
     return res.status(404).send({

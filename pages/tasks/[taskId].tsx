@@ -18,8 +18,6 @@ export default function Task(props: Props) {
     router.replace(router.asPath);
   }
 
-  console.log('subtasks in task id page', props.subtasks);
-
   return (
     <Container>
       <TaskDetails
@@ -61,8 +59,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     Number(context.query.taskId),
     profile.id,
   );
-
-  console.log('subtasks from task id gssp', subtasks);
 
   return {
     props: { task: task, subtasks: subtasks, profileId: profile.id },
