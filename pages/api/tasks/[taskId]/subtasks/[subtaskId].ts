@@ -20,8 +20,6 @@ export default async function subtaskHandler(
   const session = await getValidSessionByToken(sessionToken);
   const profile = await getProfileBySessionToken(sessionToken);
 
-  console.log('body from subtask id api', body);
-
   if (!session) {
     return res.status(404).send({
       errors: [{ message: 'You do not have a valid session.' }],
@@ -41,7 +39,6 @@ export default async function subtaskHandler(
 
     // delete task
   } else if (req.method === 'DELETE') {
-    console.log('query', req.query);
     const deletedSubtask = await deleteSubtask(Number(query.subtaskId));
     return res.status(200).json(deletedSubtask);
 

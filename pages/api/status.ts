@@ -16,7 +16,6 @@ export default async function statusHandler(
 ) {
   const sessionToken = req.cookies.sessionToken;
   const session = await getValidSessionByToken(sessionToken);
-  console.log('status session token', sessionToken);
 
   if (!session) {
     res.status(404).send({

@@ -34,7 +34,6 @@ export default async function taskHandler(
   }
 
   if (!profile) {
-    console.log('error in profile');
     return res.status(404).send({
       errors: [
         {
