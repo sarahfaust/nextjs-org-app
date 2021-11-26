@@ -4,31 +4,31 @@ import { AppProps } from 'next/dist/shared/lib/router/router';
 import { useCallback, useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { componentStyle, globalStyles } from '../styles/styles';
+import { authContext } from '../util/auth-context';
 import { Errors, TaskType } from '../util/types';
 
 function App({ Component, pageProps }: AppProps) {
-  const [username, setUsername] = useState('');
-  // const [userId, setUserId] = useState(0);
+  const [userId, setUserId] = useState(0);
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [firstName, setFirstName] = useState('');
   const [profileId, setProfileId] = useState(0);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // const router = useRouter();
+  const [hasAuth, setHasAuth] = useState(false);
 
-  const updateStatus = useCallback(async () => {
+  const updateAuthStatus = useCallback(async () => {
     const response = await fetch('/api/status');
     const status = await response.json();
+
     if ('errors' in status) {
       console.log('status has error', status.errors);
-      setUsername('');
-      setIsAuthenticated(false);
+      setUserId(0);
+      setHasAuth(false);
       return;
     }
-    console.log(status);
-    setUsername(status.user.username);
+
+    setUserId(status.user.id);
     setFirstName(status.profile.firstName);
     setProfileId(status.profile.id);
-    setIsAuthenticated(true);
+    setHasAuth(true);
   }, []);
 
   const updateTasks = useCallback(async () => {
@@ -48,36 +48,30 @@ function App({ Component, pageProps }: AppProps) {
   }, []);
 
   useEffect(() => {
-    updateStatus();
-  }, [updateStatus]);
+    updateAuthStatus();
+  }, [updateAuthStatus]);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (hasAuth) {
       updateTasks();
     }
-  }, [updateTasks, isAuthenticated]);
+  }, [updateTasks, hasAuth]);
 
   return (
     <>
       <Global styles={globalStyles} />
-      <Layout
-        isAuthenticated={isAuthenticated}
-        username={username}
-        profileId={profileId}
-        tasks={tasks}
+      <authContext.Provider
+        value={{ hasAuth, updateAuthStatus, userId, profileId, firstName }}
       >
-        <Component
-          {...pageProps}
-          css={componentStyle}
-          isAuthenticated={isAuthenticated}
-          username={username}
-          profileId={profileId}
-          firstName={firstName}
-          tasks={tasks}
-          updateStatus={updateStatus}
-          updateTasks={updateTasks}
-        />
-      </Layout>
+        <Layout tasks={tasks}>
+          <Component
+            {...pageProps}
+            css={componentStyle}
+            tasks={tasks}
+            updateTasks={updateTasks}
+          />
+        </Layout>
+      </authContext.Provider>
     </>
   );
 }

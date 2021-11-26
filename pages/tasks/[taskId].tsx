@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import TaskDetails from '../../components/TaskDetails';
-import { getSubtasksByTaskId } from '../../util/database';
+import { Container } from '../../styles/styles';
 import { SubtaskType, TaskType } from '../../util/types';
 
 type Props = {
@@ -18,27 +18,34 @@ export default function Task(props: Props) {
     router.replace(router.asPath);
   }
 
+  console.log('subtasks in task id page', props.subtasks);
+
   return (
-    <TaskDetails
-      profileId={props.profileId}
-      task={props.task}
-      subtasks={props.subtasks}
-      updateTasks={props.updateTasks}
-      updateTask={updateTask}
-    />
+    <Container>
+      <TaskDetails
+        profileId={props.profileId}
+        task={props.task}
+        subtasks={props.subtasks}
+        updateTasks={props.updateTasks}
+        updateTask={updateTask}
+      />
+    </Container>
   );
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { getValidSessionByToken, getTaskByTaskId } = await import(
-    '../../util/database'
-  );
-  const sessionToken = context.req.cookies.sessionToken;
-  const session = await getValidSessionByToken(sessionToken);
-  const task = await getTaskByTaskId(Number(context.query.taskId));
-  const subtasks = await getSubtasksByTaskId(Number(context.query.taskId));
+  const {
+    getValidatedUserBySessionToken,
+    getProfileBySessionToken,
+    getTaskByTaskIdAndProfileId,
+    getSubtasksByTaskIdAndProfileId,
+  } = await import('../../util/database');
 
-  if (!session) {
+  const sessionToken = context.req.cookies.sessionToken;
+  const validatedUser = await getValidatedUserBySessionToken(sessionToken);
+  const profile = await getProfileBySessionToken(sessionToken);
+
+  if (!validatedUser || !profile) {
     return {
       redirect: {
         destination: '/',
@@ -46,7 +53,18 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
+  const task = await getTaskByTaskIdAndProfileId(
+    Number(context.query.taskId),
+    profile.id,
+  );
+  const subtasks = await getSubtasksByTaskIdAndProfileId(
+    Number(context.query.taskId),
+    profile.id,
+  );
+
+  console.log('subtasks from task id gssp', subtasks);
+
   return {
-    props: { task: task, subtasks: subtasks },
+    props: { task: task, subtasks: subtasks, profileId: profile.id },
   };
 }

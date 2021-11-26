@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
 import { Button } from '../components/Button';
@@ -39,4 +40,24 @@ export default function Home() {
       </Container>
     </div>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { getValidatedUserBySessionToken } = await import('../util/database');
+
+  const sessionToken = context.req.cookies.sessionToken;
+  const validatedUser = await getValidatedUserBySessionToken(sessionToken);
+
+  if (validatedUser) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 }

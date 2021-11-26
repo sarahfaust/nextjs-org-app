@@ -1,10 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
   deleteSubtask,
+  getProfileBySessionToken,
   getSubtaskBySubtaskId,
+  getValidSessionByToken,
   updateSubtask,
-} from '../../../util/database';
-import { Errors, SubtaskType } from '../../../util/types';
+} from '../../../../../util/database';
+import { Errors, SubtaskType } from '../../../../../util/types';
 
 export type SubtaskResponse = { errors: Errors } | SubtaskType | undefined;
 
@@ -14,6 +16,23 @@ export default async function subtaskHandler(
 ) {
   const body = req.body;
   const query = req.query;
+  const sessionToken = req.cookies.sessionToken;
+  const session = await getValidSessionByToken(sessionToken);
+  const profile = await getProfileBySessionToken(sessionToken);
+
+  console.log('body from subtask id api', body);
+
+  if (!session) {
+    return res.status(404).send({
+      errors: [{ message: 'You do not have a valid session.' }],
+    });
+  }
+
+  if (!profile) {
+    return res.status(404).send({
+      errors: [{ message: 'You do not have permission for this action.' }],
+    });
+  }
 
   // get task
   if (req.method === 'GET') {

@@ -32,11 +32,17 @@ export default function Tasks(props: Props) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { getValidSessionByToken } = await import('../../util/database');
-  const sessionToken = context.req.cookies.sessionToken;
-  const session = await getValidSessionByToken(sessionToken);
+  const {
+    getValidatedUserBySessionToken,
+    getProfileBySessionToken,
+    getTasksByProfileId,
+  } = await import('../../util/database');
 
-  if (!session) {
+  const sessionToken = context.req.cookies.sessionToken;
+  const validatedUser = await getValidatedUserBySessionToken(sessionToken);
+  const profile = await getProfileBySessionToken(sessionToken);
+
+  if (!validatedUser || !profile) {
     return {
       redirect: {
         destination: '/',
@@ -45,9 +51,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
+  const tasks = await getTasksByProfileId(profile.id);
+
   return {
-    props: {
-      session: session.userId,
-    },
+    props: { tasks: tasks, profileId: profile.id },
   };
 }

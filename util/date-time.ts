@@ -8,7 +8,11 @@ export function getTimeStringFromDateObj(inputDate: Date) {
     inputDate.getHours() < 10
       ? `0${inputDate.getHours()}`
       : inputDate.getHours()
-  }:${inputDate.getMinutes() === 0 ? '00' : inputDate.getMinutes()}`;
+  }:${
+    inputDate.getMinutes() < 10
+      ? `0${inputDate.getMinutes()}`
+      : inputDate.getMinutes()
+  }`;
 }
 
 export function setTimeInDateObj(time: string) {

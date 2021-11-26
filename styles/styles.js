@@ -59,7 +59,7 @@ export const Container = styled.section`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 0 2rem;
+  padding: 2rem;
 `;
 
 export const RowCard = styled.div`

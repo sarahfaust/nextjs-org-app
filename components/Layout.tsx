@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useAuthContext } from '../util/auth-context';
 import { TaskType } from '../util/types';
 import Footer from './Footer';
 import Header from './Header';
@@ -26,26 +27,30 @@ const Main = styled.main`
 `;
 
 type Props = {
-  isAuthenticated: boolean;
   tasks: TaskType[];
-  username: string;
-  profileId: number;
   children: JSX.Element;
 };
 
 export default function Layout(props: Props) {
+  const { hasAuth } = useAuthContext();
+
   return (
     <LayoutContainer>
-      {props.isAuthenticated && <Sidebar tasks={props.tasks} />}
-      <Content>
-        <Header
-          isAuthenticated={props.isAuthenticated}
-          username={props.username}
-          profileId={props.profileId}
-        />
-        <Main>{props.children}</Main>
-        <Footer />
-      </Content>
+      {hasAuth && (
+        <>
+          <Sidebar tasks={props.tasks} />
+          <Content>
+            <Main>{props.children}</Main>
+          </Content>
+        </>
+      )}
+      {!hasAuth && (
+        <Content>
+          <Header />
+          <Main>{props.children}</Main>
+          <Footer />
+        </Content>
+      )}
     </LayoutContainer>
   );
 }

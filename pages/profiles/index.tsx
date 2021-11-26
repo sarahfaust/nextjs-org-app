@@ -5,6 +5,7 @@ import { useState } from 'react';
 // import { useRouter } from 'next/dist/client/router';
 import { Button } from '../../components/Button';
 import { Container, Heading1 } from '../../styles/styles';
+import { useAuthContext } from '../../util/auth-context';
 import { setTimeInDateObj } from '../../util/date-time';
 import { Errors } from '../../util/types';
 
@@ -29,23 +30,21 @@ const Input = styled.input`
   font-family: inherit;
 `;
 
-type Props = { userId: number; updateStatus: () => void };
+type Props = { userId: number };
 
 export default function NewProfile(props: Props) {
+  const router = useRouter();
+  const { updateAuthStatus } = useAuthContext();
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [location, setLocation] = useState('');
   const [timeStart, setTimeStart] = useState('');
   const [timeEnd, setTimeEnd] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
-  const router = useRouter();
-
-  console.log('user id from props', props.userId);
-  console.log('time end object', setTimeInDateObj(timeEnd));
 
   async function createProfile(event: Event) {
     event.preventDefault();
-    console.log('creating profile in profile');
     const response = await fetch('/api/profiles', {
       method: 'POST',
       headers: {
@@ -71,7 +70,7 @@ export default function NewProfile(props: Props) {
       typeof router.query.returnTo === 'string' && router.query.returnTo
         ? router.query.returnTo
         : `/`;
-    props.updateStatus();
+    updateAuthStatus();
     router.push(destination);
   }
 
@@ -125,8 +124,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { getValidSessionByToken } = await import('../../util/database');
   const sessionToken = context.req.cookies.sessionToken;
   const session = await getValidSessionByToken(sessionToken);
-
-  console.log('user id in gssp', session?.userId);
 
   if (!session) {
     return {

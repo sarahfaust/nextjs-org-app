@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-// import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/dist/client/router';
 import { MouseEvent, useEffect, useState } from 'react';
 import {
   Calendar,
@@ -90,7 +90,7 @@ export default function TaskDetails(props: Props) {
   const [errors, setErrors] = useState<Errors>([]);
   const [taskNameError, setTaskNameError] = useState('');
   const [newSubtask, setNewSubtask] = useState(false);
-  // const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     if (props.task) {
@@ -101,6 +101,8 @@ export default function TaskDetails(props: Props) {
       setNewSubtask(false);
     }
   }, [props.task]);
+
+  console.log('subtasks in task details page', props.subtasks);
 
   async function saveTask(event: MouseEvent) {
     event.preventDefault();
@@ -136,9 +138,9 @@ export default function TaskDetails(props: Props) {
     props.updateTasks();
     props.updateTask();
 
-    /*     if (task) {
+    if (props.task === null && task) {
       router.push(`/tasks/${task.id}`);
-    } */
+    }
   }
 
   function addSubtask(event: MouseEvent) {
@@ -165,6 +167,7 @@ export default function TaskDetails(props: Props) {
       }
 
       props.updateTasks();
+      router.push('/tasks');
     }
   }
 
@@ -193,7 +196,6 @@ export default function TaskDetails(props: Props) {
               onClick={(event: MouseEvent) => {
                 event.preventDefault();
                 setIsDone((prev) => !prev);
-                saveTask(event);
               }}
             >
               <CheckCircle
@@ -207,8 +209,8 @@ export default function TaskDetails(props: Props) {
               aria-label="Check task"
               aria-checked={isDone}
               onClick={(event: MouseEvent) => {
+                event.preventDefault();
                 setIsDone((prev) => !prev);
-                saveTask(event);
               }}
             >
               <Circle aria-hidden="true" focusable="false" strokeWidth="1px" />
@@ -225,6 +227,7 @@ export default function TaskDetails(props: Props) {
         <>
           {props.subtasks.map((subtask) => (
             <li key={subtask.id}>
+              <div>hello</div>
               <SubtaskDetail
                 subtask={subtask}
                 taskId={taskId}
