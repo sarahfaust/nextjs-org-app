@@ -407,12 +407,13 @@ export async function getSubtasksByTaskIdAndProfileId(
   taskId: number,
   profileId: number,
 ) {
-  const subtasks = await sql<[SubtaskType[]]>`
+  const subtasks = await sql<SubtaskType[]>`
     SELECT
       subtasks.*
     FROM
       tasks, subtasks
     WHERE
+      tasks.id = ${taskId} AND
       tasks.profile_id = ${profileId} AND
       subtasks.task_id = ${taskId}
   `;
