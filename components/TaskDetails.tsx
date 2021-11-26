@@ -102,6 +102,8 @@ export default function TaskDetails(props: Props) {
     }
   }, [props.task]);
 
+  console.log('subtasks in task details page', props.subtasks);
+
   async function saveTask(event: MouseEvent) {
     event.preventDefault();
 
@@ -225,6 +227,7 @@ export default function TaskDetails(props: Props) {
         <>
           {props.subtasks.map((subtask) => (
             <li key={subtask.id}>
+              <div>hello</div>
               <SubtaskDetail
                 subtask={subtask}
                 taskId={taskId}

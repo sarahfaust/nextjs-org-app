@@ -10,6 +10,7 @@ import {
   Heading2,
   LoginCard,
 } from '../styles/styles';
+import { useAuthContext } from '../util/auth-context';
 import { Errors } from '../util/types';
 import { SignupResponse } from './api/signup';
 
@@ -34,13 +35,14 @@ const Input = styled.input`
   font-family: inherit;
 `;
 
-type Props = { updateStatus: () => void; csrfToken: string };
+type Props = { csrfToken: string };
 
 export default function Signup(props: Props) {
+  const router = useRouter();
+  const { updateAuthStatus } = useAuthContext();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
-  const router = useRouter();
   const inputFocus = useRef<HTMLInputElement>(null);
 
   useLayoutEffect(() => {
@@ -69,7 +71,7 @@ export default function Signup(props: Props) {
       return;
     }
 
-    props.updateStatus();
+    updateAuthStatus();
     router.push('/profiles');
   }
 
@@ -113,7 +115,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { getValidSessionByToken } = await import('../util/database');
   const { createToken } = await import('../util/csrf');
 
-  /*   // Redirect from HTTP to HTTPS on Heroku
+  // Redirect from HTTP to HTTPS on Heroku
   if (
     context.req.headers.host &&
     context.req.headers['x-forwarded-proto'] &&
@@ -125,17 +127,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         permanent: true,
       },
     };
-  } */
+  }
 
   const sessionToken = context.req.cookies.sessionToken;
   const session = await getValidSessionByToken(sessionToken);
 
   if (session) {
-    // Redirect the user when they have a session token by returning an object with the `redirect` prop
-    // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
     return {
       redirect: {
-        destination: '/',
+        destination: '/dashboard',
         permanent: false,
       },
     };

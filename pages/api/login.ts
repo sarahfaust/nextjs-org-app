@@ -57,6 +57,7 @@ export default async function loginHandler(
     );
     const cookie = createTokenCookie(newSession.token);
 
+    // send response with user data and cookie in header
     // remember to remove the pw-hash from the user object before returning
     const { passwordHash, ...user } = userWithPasswordHash;
     res.status(200).setHeader('Set-Cookie', cookie).send({ user: user });

@@ -36,9 +36,7 @@ const LogoText = styled.p`
   color: #292f36;
 `;
 
-type Props = { username: string; profileId: number; isAuthenticated: boolean };
-
-export default function Header(props: Props) {
+export default function Header() {
   return (
     <HeaderStyle>
       <Navigation>
@@ -49,33 +47,12 @@ export default function Header(props: Props) {
             </Logo>
           </NavLink>
         </Link>
-        {!props.isAuthenticated && (
-          <>
-            <Link href="/signup" passHref>
-              <NavLink data-cy="header-signup-link">Sign up</NavLink>
-            </Link>
-            <Link href="/login" passHref>
-              <NavLink data-cy="header-login-link">Log in</NavLink>
-            </Link>
-          </>
-        )}
-      </Navigation>
-      <Navigation>
-        {props.isAuthenticated && (
-          <>
-            <Link href={`/profiles/${props.profileId}`} passHref>
-              <NavLink data-cy="header-profile-link">Profile</NavLink>
-            </Link>
-            <Link href={`/profiles/${props.profileId}`} passHref>
-              <NavLink data-cy="header-username-link">
-                Username: {props.username}
-              </NavLink>
-            </Link>
-            <NavLink href="/logout" data-cy="header-logout-link">
-              Logout
-            </NavLink>
-          </>
-        )}
+        <Link href="/signup" passHref>
+          <NavLink data-cy="header-signup-link">Sign up</NavLink>
+        </Link>
+        <Link href="/login" passHref>
+          <NavLink data-cy="header-login-link">Log in</NavLink>
+        </Link>
       </Navigation>
     </HeaderStyle>
   );

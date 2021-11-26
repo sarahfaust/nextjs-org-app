@@ -10,6 +10,7 @@ import {
   Heading2,
   LoginCard,
 } from '../styles/styles';
+import { useAuthContext } from '../util/auth-context';
 import { Errors } from '../util/types';
 import { LoginResponse } from './api/login';
 
@@ -34,13 +35,17 @@ const Input = styled.input`
   font-family: inherit;
 `;
 
-type Props = { updateStatus: () => void };
+export default function Login() {
+  const router = useRouter();
+  const { hasAuth, updateAuthStatus } = useAuthContext();
 
-export default function Login(props: Props) {
+  if (hasAuth) {
+    router.push('/dashboard');
+  }
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
-  const router = useRouter();
   const inputFocus = useRef<HTMLInputElement>(null);
 
   useLayoutEffect(() => {
@@ -73,7 +78,7 @@ export default function Login(props: Props) {
       typeof router.query.returnTo === 'string' && router.query.returnTo
         ? router.query.returnTo
         : `/dashboard`;
-    props.updateStatus();
+    updateAuthStatus();
     router.push(destination);
   }
 
@@ -137,7 +142,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (session) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/dashboard',
         permanent: false,
       },
     };

@@ -1,25 +1,11 @@
 import { serialize } from 'cookie';
-import Cookies from 'js-cookie';
-
-export function getParsedCookie(key: string) {
-  try {
-    return JSON.parse(key);
-  } catch (err) {
-    return undefined;
-  }
-}
-
-export function setParsedCookie(key: string, value: string) {
-  Cookies.set(key, JSON.stringify(value));
-}
 
 export function createTokenCookie(token: string) {
-  // check if we are in production e.g. Heroku
   const isProduction = process.env.NODE_ENV === 'production';
-  // Save the token in a cookie on the user's machine
+  // Save the token in a cookie in the user's browser
   // (cookies get sent automatically to the server every time
   // a user makes a request)
-  const maxAge = 60 * 20; // 20 minutes
+  const maxAge = 60 * 60 * 24; // 2 hours
 
   return serialize('sessionToken', token, {
     maxAge: maxAge,
@@ -36,3 +22,8 @@ export function createTokenCookie(token: string) {
     sameSite: 'lax',
   });
 }
+
+// write update function for cookie in order to update
+// either automatically with some sort of ping to keep
+// session open while window is open, or to update on
+// action to keep session open while user is active

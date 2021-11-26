@@ -77,6 +77,25 @@ export async function getUserWithPasswordHashByUsername(username: string) {
   return user && camelcaseKeys(user);
 }
 
+export async function getValidatedUserBySessionToken(
+  sessionToken: string | undefined,
+) {
+  if (!sessionToken) return undefined;
+
+  const [user] = await sql<[UserType | undefined]>`
+    SELECT
+      users.*
+    FROM
+      sessions,
+      users
+    WHERE
+      sessions.token = ${sessionToken} AND
+      sessions.user_id = users.id AND
+      sessions.expires > NOW()
+  `;
+  return user && camelcaseKeys(user);
+}
+
 export async function createUser(userToCreate: CreateUserType) {
   const [user] = await sql<[UserType | undefined]>`
     INSERT INTO users
@@ -171,7 +190,7 @@ export async function deleteExpiredSessions() {
 
 // PROFILE
 export async function getProfileByUserId(userId: number) {
-  const profiles = await sql<[ProfileType]>`
+  const [profiles] = await sql<[ProfileType | undefined]>`
     SELECT
       *
     FROM
@@ -179,11 +198,11 @@ export async function getProfileByUserId(userId: number) {
     WHERE
       user_id = ${userId};
   `;
-  return camelcaseKeys(profiles[0]);
+  return profiles && camelcaseKeys(profiles);
 }
 
 export async function getProfileByProfileId(profileId: number) {
-  const profiles = await sql<[ProfileType]>`
+  const [profiles] = await sql<[ProfileType | undefined]>`
     SELECT
       *
     FROM
@@ -191,11 +210,26 @@ export async function getProfileByProfileId(profileId: number) {
     WHERE
       id = ${profileId};
   `;
-  return camelcaseKeys(profiles[0]);
+  return profiles && camelcaseKeys(profiles);
+}
+
+export async function getProfileBySessionToken(token: string) {
+  if (!token) return undefined;
+  const [profiles] = await sql<[ProfileType | undefined]>`
+    SELECT
+      profiles.id
+    FROM
+      sessions, users, profiles
+    WHERE
+      sessions.token = ${token} AND
+      users.id = sessions.user_id AND
+      profiles.id = users.id
+  `;
+  return profiles && camelcaseKeys(profiles);
 }
 
 export async function createProfile(profileToCreate: CreateProfileType) {
-  const [profile] = await sql<[ProfileType | undefined]>`
+  const [profiles] = await sql<[ProfileType | undefined]>`
     INSERT INTO profiles
       (user_id, first_name, last_name, location, time_start, time_end)
     VALUES
@@ -210,14 +244,14 @@ export async function createProfile(profileToCreate: CreateProfileType) {
     RETURNING
       id, user_id, first_name, last_name, location, time_start, time_end;
   `;
-  return profile && camelcaseKeys(profile);
+  return profiles && camelcaseKeys(profiles);
 }
 
 export async function updateProfile(
   id: number,
   profileToUpdate: CreateProfileType,
 ) {
-  const [profile] = await sql<[ProfileType | undefined]>`
+  const [profiles] = await sql<[ProfileType | undefined]>`
     UPDATE
       profiles
     SET
@@ -232,11 +266,11 @@ export async function updateProfile(
     RETURNING
       id, user_id, first_name, last_name, location, time_start, time_end;
   `;
-  return profile && camelcaseKeys(profile);
+  return profiles && camelcaseKeys(profiles);
 }
 
 export async function deleteProfile(id: number) {
-  const [profile] = await sql<[ProfileType | undefined]>`
+  const [profiles] = await sql<[ProfileType | undefined]>`
     DELETE FROM
       profiles
     WHERE
@@ -244,7 +278,7 @@ export async function deleteProfile(id: number) {
     RETURNING
       id, user_id, first_name, last_name, location, time_start, time_end;
   `;
-  return profile && camelcaseKeys(profile);
+  return profiles && camelcaseKeys(profiles);
 }
 
 // DAY
@@ -301,6 +335,22 @@ export async function getTasksByProfileId(profileId: number) {
   });
 }
 
+export async function getTaskByTaskIdAndProfileId(
+  taskId: number,
+  profileId: number,
+) {
+  const [task] = await sql<[TaskType | undefined]>`
+    SELECT
+      *
+    FROM
+      tasks
+    WHERE
+      id = ${taskId} AND
+      profile_id = ${profileId}
+  `;
+  return task && camelcaseKeys(task);
+}
+
 export async function getTaskByTaskId(taskId: number) {
   const [task] = await sql<[TaskType]>`
     SELECT
@@ -353,6 +403,40 @@ export async function deleteTask(id: number) {
 }
 
 // SUBTASK
+export async function getSubtasksByTaskIdAndProfileId(
+  taskId: number,
+  profileId: number,
+) {
+  const subtasks = await sql<[SubtaskType[]]>`
+    SELECT
+      subtasks.*
+    FROM
+      tasks, subtasks
+    WHERE
+      tasks.profile_id = ${profileId} AND
+      subtasks.task_id = ${taskId}
+  `;
+  return subtasks.map((subtask) => {
+    return camelcaseKeys(subtask);
+  });
+}
+
+export async function getSubtaskByTaskIdAndProfileId(
+  taskId: number,
+  profileId: number,
+) {
+  const [subtask] = await sql<[SubtaskType | undefined]>`
+    SELECT
+      subtasks.*
+    FROM
+      tasks, subtasks
+    WHERE
+      tasks.profile_id = ${profileId} AND
+      subtasks.task_id = ${taskId}
+  `;
+  return subtask && camelcaseKeys(subtask);
+}
+
 export async function getSubtasksByTaskId(taskId: number) {
   const subtasks = await sql<SubtaskType[]>`
     SELECT

@@ -1,10 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
   deleteTask,
-  getTaskByTaskId,
+  getProfileBySessionToken,
+  getTaskByTaskIdAndProfileId,
+  getValidSessionByToken,
   updateTask,
-} from '../../../util/database';
-import { Errors, TaskType } from '../../../util/types';
+} from '../../../../util/database';
+import { Errors, TaskType } from '../../../../util/types';
 
 export type TaskRequest = {
   profileId: number;
@@ -21,20 +23,48 @@ export default async function taskHandler(
 ) {
   const body = req.body;
   const query = req.query;
+  const sessionToken = req.cookies.sessionToken;
+  const session = await getValidSessionByToken(sessionToken);
+  const profile = await getProfileBySessionToken(sessionToken);
+
+  if (!session) {
+    return res.status(404).send({
+      errors: [{ message: 'You do not have a valid session.' }],
+    });
+  }
+
+  if (!profile) {
+    console.log('error in profile');
+    return res.status(404).send({
+      errors: [
+        {
+          message: 'You do not have permission for this action.',
+        },
+      ],
+    });
+  }
 
   // get task
   if (req.method === 'GET') {
-    const task = await getTaskByTaskId(Number(query.taskId));
+    const task = await getTaskByTaskIdAndProfileId(
+      Number(query.taskId),
+      profile.id,
+    );
     return res.status(200).json(task);
 
     // delete task
   } else if (req.method === 'DELETE') {
-    console.log('query', req.query);
     const deletedTask = await deleteTask(Number(query.taskId));
     return res.status(200).json(deletedTask);
 
     // update task
   } else if (req.method === 'PATCH') {
+    if (body.profileId !== profile.id) {
+      return res.status(404).send({
+        errors: [{ message: 'You do not have permission for this action.' }],
+      });
+    }
+
     const updatedTask = await updateTask(Number(query.taskId), {
       profileId: body.profileId,
       name: body.name,

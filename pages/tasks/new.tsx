@@ -1,3 +1,4 @@
+import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import TaskDetails from '../../components/TaskDetails';
 import { Container } from '../../styles/styles';
@@ -22,4 +23,26 @@ export default function Tasks(props: Props) {
       />
     </Container>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { getValidatedUserBySessionToken, getProfileBySessionToken } =
+    await import('../../util/database');
+
+  const sessionToken = context.req.cookies.sessionToken;
+  const validatedUser = await getValidatedUserBySessionToken(sessionToken);
+  const profile = await getProfileBySessionToken(sessionToken);
+
+  if (!validatedUser || !profile) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { profileId: profile.id },
+  };
 }

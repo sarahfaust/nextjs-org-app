@@ -8,12 +8,11 @@ export default async function sessionsHandler(
   req: NextApiRequest,
   res: NextApiResponse<SessionsResponse>,
 ) {
-  console.log('cookies', req.cookies);
   const sessionToken = req.cookies.sessionToken;
 
   if (!sessionToken) {
     res.status(400).send({
-      errors: [{ message: "Request doesn't contain sessionToken cookie" }],
+      errors: [{ message: "Request doesn't contain session token cookie." }],
     });
     return;
   }

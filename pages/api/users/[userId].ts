@@ -1,15 +1,35 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { deleteUser, getUser, updateUser } from '../../../util/database';
-import { UserType } from '../../../util/types';
+import {
+  deleteUser,
+  getUser,
+  getValidSessionByToken,
+  updateUser,
+} from '../../../util/database';
+import { Errors, UserType } from '../../../util/types';
 
-export type UsersResponse = UserType | undefined;
+export type UserResponse = { errors: Errors } | UserType | undefined;
 
 export default async function userHandler(
   req: NextApiRequest,
-  res: NextApiResponse<UsersResponse>,
+  res: NextApiResponse<UserResponse>,
 ) {
   const body = req.body;
   const query = req.query;
+  const sessionToken = req.cookies.sessionToken;
+  const session = await getValidSessionByToken(sessionToken);
+
+  if (!session) {
+    res.status(404).send({
+      errors: [{ message: 'You do not have a valid session.' }],
+    });
+    return;
+  }
+
+  if (session.userId !== Number(query.userId)) {
+    res.status(404).send({
+      errors: [{ message: 'You do not have permission or this action.' }],
+    });
+  }
 
   // get user
   if (req.method === 'GET') {

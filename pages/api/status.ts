@@ -14,29 +14,23 @@ export default async function statusHandler(
   req: NextApiRequest,
   res: NextApiResponse<StatusResponse>,
 ) {
+  const sessionToken = req.cookies.sessionToken;
+  const session = await getValidSessionByToken(sessionToken);
+  console.log('status session token', sessionToken);
+
+  if (!session) {
+    res.status(404).send({
+      errors: [{ message: 'You do not have a valid session.' }],
+    });
+    return;
+  }
+
   if (req.method === 'GET') {
-    const sessionToken = req.cookies.sessionToken;
-    const session = await getValidSessionByToken(sessionToken);
-    console.log('status session token', sessionToken);
-
-    if (!session) {
-      res.status(404).send({
-        errors: [{ message: 'You do not have a valid session.' }],
-      });
-      return;
-    }
-
-    console.log('session valid', session);
-
     const user = (await getUser(session.userId)) as UserType | undefined;
-
-    console.log('user valid', user);
-
     const profile = (await getProfileByUserId(session.userId)) as
       | ProfileType
       | undefined;
 
-    console.log('status user and profile', user, profile);
     if (!user) {
       res.status(404).send({
         errors: [{ message: 'User not found.' }],

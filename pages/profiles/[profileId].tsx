@@ -147,15 +147,13 @@ export default function Profile(props: Props) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { getValidSessionByToken, getProfileByProfileId } = await import(
-    '../../util/database'
-  );
+  const { getValidatedUserBySessionToken, getProfileByProfileId } =
+    await import('../../util/database');
 
   const sessionToken = context.req.cookies.sessionToken;
-  const session = await getValidSessionByToken(sessionToken);
-  const profile = await getProfileByProfileId(Number(context.query.profileId));
+  const validatedUser = await getValidatedUserBySessionToken(sessionToken);
 
-  if (!session) {
+  if (!validatedUser) {
     return {
       redirect: {
         destination: '/',
@@ -163,6 +161,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
+
+  const profile = await getProfileByProfileId(Number(context.query.profileId));
 
   return {
     props: {

@@ -1,5 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { createTask, getTasksByProfileId } from '../../../util/database';
+import {
+  createTask,
+  getProfileBySessionToken,
+  getTasksByProfileId,
+  getValidSessionByToken,
+} from '../../../util/database';
 import { Errors, TaskType } from '../../../util/types';
 
 export type TasksResponse = { errors: Errors } | TaskType[] | TaskType;
@@ -9,22 +14,39 @@ export default async function tasksHandler(
   res: NextApiResponse<TasksResponse>,
 ) {
   const body = req.body;
-  const cookies = req.cookies;
   const sessionToken = req.cookies.sessionToken;
+  const session = await getValidSessionByToken(sessionToken);
+  const profile = await getProfileBySessionToken(sessionToken);
 
-  console.log('cookies', cookies);
-  console.log('sessionToken', sessionToken);
-  console.log('session id', sessionToken);
+  if (!session) {
+    return res.status(404).send({
+      errors: [{ message: 'You do not have a valid session.' }],
+    });
+  }
+
+  if (!profile) {
+    return res.status(404).send({
+      errors: [{ message: 'You do not have permission for this action.' }],
+    });
+  }
 
   // GET for all tasks
   if (req.method === 'GET') {
-    // TODO: pass profile id to get only tasks connected to the profile
-    // instead of all tasks in the database
-    const tasks = await getTasksByProfileId(1);
+    const tasks = await getTasksByProfileId(profile.id);
     return res.status(200).json(tasks);
 
     // POST for new task
   } else if (req.method === 'POST') {
+    if (body.profileId !== profile.id) {
+      return res.status(404).send({
+        errors: [
+          {
+            message: 'You do not have permission for this action.',
+          },
+        ],
+      });
+    }
+
     const task = await createTask({
       profileId: body.profileId,
       name: body.name,

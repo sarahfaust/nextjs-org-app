@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { MouseEvent, useEffect, useState } from 'react';
 import { Check, Circle, Save, Trash } from 'react-feather';
-import { SubtasksResponse } from '../pages/api/subtasks';
-import { SubtaskResponse } from '../pages/api/subtasks/[subtaskId]';
+import { SubtasksResponse } from '../pages/api/tasks/[taskId]/subtasks';
+import { SubtaskResponse } from '../pages/api/tasks/[taskId]/subtasks/[subtaskId]';
 import { ErrorCard, ErrorMessage, Form, HiddenButton } from '../styles/styles';
 import { Errors, SubtaskType } from '../util/types';
 
@@ -88,8 +88,8 @@ export default function SubtaskDetail(props: Props) {
 
     const response = await fetch(
       props.subtask === null
-        ? '/api/subtasks'
-        : `/api/subtasks/${props.subtask.id}`,
+        ? `/api/tasks/${props.taskId}/subtasks`
+        : `/api/tasks/${props.taskId}/subtasks/${props.subtask.id}`,
       {
         method: props.subtask === null ? 'POST' : 'PATCH',
         headers: {
@@ -120,12 +120,15 @@ export default function SubtaskDetail(props: Props) {
     event.preventDefault();
 
     if (props.subtask) {
-      const response = await fetch(`/api/subtasks/${props.subtask.id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `/api/tasks/${props.taskId}/subtasks/${props.subtask.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      });
+      );
 
       const subtask = (await response.json()) as SubtaskResponse;
       if (subtask && 'errors' in subtask) {
