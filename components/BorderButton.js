@@ -14,10 +14,10 @@ const ButtonStyle = styled.button`
   font-size: 16px;
   transition: 300ms;
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
   &:active {
-    transform: scale(0.98);
+    transform: scale(0.99);
   }
   &:disabled {
     background-color: lightgray;

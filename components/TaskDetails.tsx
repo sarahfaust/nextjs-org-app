@@ -17,12 +17,12 @@ import SubtaskDetail from './SubtaskDetail';
 const Card = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 12px;
-  margin-bottom: 12px;
   width: 560px;
   border-radius: 4px;
   border: 1px solid darkgrey;
-  background-color: whitesmoke;
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: #f7f7f7;
 `;
 
 const InputLine = styled.div`
@@ -35,7 +35,7 @@ const InputLine = styled.div`
   margin-bottom: 6px;
   width: 100%;
   &:hover {
-    background-color: #fafafa;
+    background-color: #ffffff;
   }
 `;
 
@@ -48,21 +48,23 @@ const Input = styled.input`
   font-family: inherit;
   font-size: 18px;
   &:focus {
-    background-color: #fafafa;
+    background-color: #ffffff;
     border: 1px solid white;
   }
   &:hover {
-    background-color: #fafafa;
+    background-color: #ffffff;
   }
 `;
 
 const IconButton = styled.button`
+  display: flex;
+  align-items: center;
   background-color: transparent;
   border: none;
   border-radius: 8px;
   padding: 6px;
   &:hover {
-    background-color: #fafafa;
+    background-color: #ffffff;
   }
 `;
 

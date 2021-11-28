@@ -2,7 +2,6 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const globalStyles = css`
-  @import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700&display=swap');
 
   html,
@@ -35,7 +34,7 @@ export const globalStyles = css`
   h1,
   h2,
   span {
-    color: #333333;
+    color: #292f36;
     font-size: 16px;
   }
 `;
@@ -52,10 +51,10 @@ export const componentStyle = css`
 `;
 
 export const Heading1 = styled.h1`
-  margin: 12px 0;
+  margin-bottom: 36px;
   text-transform: capitalize;
-  font-size: 1.7rem;
-  font-weight: 500;
+  font-size: 1.4rem;
+  font-weight: 600;
   color: #292f36;
 `;
 
@@ -91,8 +90,8 @@ export const LogCard = styled.div`
   padding: 48px;
   width: 480px;
   border-radius: 4px;
-  border: 1px solid darkgrey;
-  background-color: whitesmoke;
+  border: 1px solid #6d6d6d;
+  background-color: #f7f7f7;
 `;
 
 export const LogForm = styled.form`
@@ -128,25 +127,40 @@ export const LogLink = styled.a`
   }
 `;
 
-// PROFILE & TASK CARD
-export const Form = styled.form`
+// PROFILE
+export const ProfileForm = styled.form`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   width: 100%;
 `;
 
-export const Label = styled.label`
+export const ProfileLabel = styled.label`
   margin-bottom: 6px;
   font-family: inherit;
   font-weight: 400;
 `;
 
-export const Input = styled.input`
+export const ProfileInput = styled.input`
   margin-bottom: 24px;
   padding: 8px;
   height: 36px;
   min-width: 240px;
   font-family: inherit;
+  border: 1px solid #c5c5c5;
+  border-radius: 2px;
+  &:disabled {
+    background-color: #f7f7f7;
+    border: 1px solid #c5c5c5;
+    border-radius: 2px;
+  }
+`;
+
+// TASKS
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 `;
 
 // ERROR MESSAGES
@@ -168,4 +182,8 @@ export const ErrorCard = styled.div`
 // BUTTONS
 export const HiddenButton = styled.button`
   display: none;
+`;
+
+export const ButtonRow = styled.div`
+  display: flex;
 `;

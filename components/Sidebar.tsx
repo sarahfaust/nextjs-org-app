@@ -15,9 +15,9 @@ const NavContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 1.2rem;
+  padding: 2rem 1.2rem;
   background-color: #d3d3d3;
-  border-right: 1px solid #b8b8b8;
+  border-right: 1px solid #c5c5c5;
 `;
 
 const TopNav = styled.div`
@@ -33,7 +33,7 @@ const NavLink = styled.a`
   width: 48px;
   height: 48px;
   background-color: #c5c5c5;
-  color: #333333;
+  color: #292f36;
   border-radius: 24px;
   transition: 300ms;
   &:hover {
@@ -48,26 +48,29 @@ const TasksContainer = styled.div`
   flex: 1;
   flex-direction: column;
   background-color: #e0e0e0;
-  padding: 1.5rem;
+  padding: 2rem;
   overflow-y: scroll;
   overflow-x: hidden;
 `;
 
 const HeadingContainer = styled.h2`
-  padding: 24px 0 12px;
+  padding-bottom: 12px;
   margin-bottom: 12px;
-  border-bottom: 1px solid #b9b9b9;
+  border-bottom: 1px solid #c5c5c5;
 `;
 
 const Heading = styled.a`
-  font-size: 1.3rem;
-  font-weight: 400;
-  letter-spacing: 2px;
-  color: #3b3b3b;
-  text-transform: uppercase;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #292f36;
+  transition: 300ms;
+  &:hover {
+    color: #6d6d6d;
+  }
 `;
 
 const TaskListContainer = styled.div`
+  margin-bottom: 36px;
   width: 100%;
 `;
 

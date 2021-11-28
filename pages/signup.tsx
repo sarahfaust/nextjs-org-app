@@ -81,9 +81,9 @@ export default function Signup(props: Props) {
             onChange={(event) => setPassword(event.currentTarget.value)}
           />
           <LogText>
-            Don't have an account yet? Click here to{' '}
-            <Link href="/signup" passHref>
-              <LogLink>join</LogLink>
+            Already have an account? Click here to{' '}
+            <Link href="/login" passHref>
+              <LogLink>log in</LogLink>
             </Link>
             .
           </LogText>

@@ -12,13 +12,13 @@ const Navigation = styled.nav`
   display: flex;
   align-items: center;
   gap: 12px;
-  background-color: #f1f1f1;
+  background-color: transparent;
   margin: 2rem 4rem;
 `;
 
 const NavLink = styled.a`
   &:hover {
-    color: darkgray;
+    color: #6d6d6d;
   }
 `;
 
@@ -33,7 +33,7 @@ const Logo = styled.div`
 `;
 
 const LogoText = styled.p`
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 600;
   color: #292f36;
 `;

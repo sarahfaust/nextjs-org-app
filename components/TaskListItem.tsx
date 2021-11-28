@@ -19,6 +19,8 @@ const TaskListLink = styled.a`
 `;
 
 const IconButton = styled.button`
+  display: flex;
+  align-items: center;
   background-color: transparent;
   border: none;
   border-radius: 8px;

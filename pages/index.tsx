@@ -36,6 +36,7 @@ const ButtonContainer = styled.div`
 `;
 
 const Underline = styled.span`
+  font: inherit;
   font-weight: 500;
   text-decoration: underline;
   text-decoration-color: lightblue;

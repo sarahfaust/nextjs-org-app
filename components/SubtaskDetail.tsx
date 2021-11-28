@@ -21,7 +21,7 @@ const InputLine = styled.div`
   margin-bottom: 6px;
   grid-gap: 2px;
   &:hover {
-    background-color: #fafafa;
+    background-color: #ffffff;
   }
 `;
 
@@ -35,23 +35,21 @@ const Input = styled.input`
   font-size: 16px;
   font-weight: 300;
   &:focus {
-    background-color: #fafafa;
+    background-color: #ffffff;
     border: 1px solid white;
   }
   &:hover {
-    background-color: #fafafa;
+    background-color: #ffffff;
   }
 `;
 
 const IconButton = styled.button`
+  display: flex;
+  align-items: center;
   background-color: transparent;
-  color: none;
   border: none;
   border-radius: 8px;
   padding: 6px;
-  &:hover {
-    background-color: #fafafa;
-  }
 `;
 
 const Controls = styled.div`
