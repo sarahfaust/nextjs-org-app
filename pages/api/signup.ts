@@ -24,7 +24,7 @@ export default async function signupHandler(
 ) {
   if (!req.body.username || !req.body.password) {
     res.status(400).send({
-      errors: [{ message: 'Request does not contain username and password.' }],
+      errors: [{ message: 'Please enter username and password.' }],
     });
     return;
   }

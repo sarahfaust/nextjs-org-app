@@ -38,7 +38,6 @@ export default async function userHandler(
 
     // delete user
   } else if (req.method === 'DELETE') {
-    console.log('query', req.query);
     const deletedUser = await deleteUser(Number(query.userId));
     return res.status(200).json(deletedUser);
 

@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { BorderButton } from './BorderButton';
+import { Button } from './Button';
 
 const HeaderStyle = styled.header`
   display: flex;
@@ -9,14 +11,14 @@ const HeaderStyle = styled.header`
 const Navigation = styled.nav`
   display: flex;
   align-items: center;
-  gap: 24px;
-  background-color: #ffffff;
-  margin: 2rem;
+  gap: 12px;
+  background-color: transparent;
+  margin: 2rem 4rem;
 `;
 
 const NavLink = styled.a`
   &:hover {
-    color: darkgray;
+    color: #6d6d6d;
   }
 `;
 
@@ -31,8 +33,8 @@ const Logo = styled.div`
 `;
 
 const LogoText = styled.p`
-  font-size: 2rem;
-  font-weight: 100;
+  font-size: 2.5rem;
+  font-weight: 600;
   color: #292f36;
 `;
 
@@ -47,11 +49,16 @@ export default function Header() {
             </Logo>
           </NavLink>
         </Link>
-        <Link href="/signup" passHref>
-          <NavLink data-cy="header-signup-link">Sign up</NavLink>
+      </Navigation>
+      <Navigation>
+        <Link href="/about" passHref>
+          <NavLink data-cy="header-about-link">About</NavLink>
         </Link>
         <Link href="/login" passHref>
-          <NavLink data-cy="header-login-link">Log in</NavLink>
+          <BorderButton data-cy="header-login-link">Log in</BorderButton>
+        </Link>
+        <Link href="/signup" passHref>
+          <Button data-cy="header-signup-link">Join</Button>
         </Link>
       </Navigation>
     </HeaderStyle>

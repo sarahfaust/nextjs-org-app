@@ -63,7 +63,7 @@ function App({ Component, pageProps }: AppProps) {
       <authContext.Provider
         value={{ hasAuth, updateAuthStatus, userId, profileId, firstName }}
       >
-        <Layout tasks={tasks}>
+        <Layout tasks={tasks} updateTasks={updateTasks}>
           <Component
             {...pageProps}
             css={componentStyle}

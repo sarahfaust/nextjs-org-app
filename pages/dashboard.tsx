@@ -1,16 +1,38 @@
 import styled from '@emotion/styled';
 import { GetServerSidePropsContext } from 'next';
-// import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useState } from 'react';
-import { Button } from '../components/Button';
-import { Container, Heading1 } from '../styles/styles';
+import { Play, Plus } from 'react-feather';
+import { ActionButton } from '../components/ActionButton';
+import { AppContainer, Heading1 } from '../styles/styles';
 import { useAuthContext } from '../util/auth-context';
 import { TaskType } from '../util/types';
 
 const Text = styled.div`
-  margin: 24px 0;
+  width: 432px;
+  margin-bottom: 24px;
 `;
+
+const TaskStatContainer = styled.div`
+  display: flex;
+  gap: 36px;
+  margin-bottom: 24px;
+`;
+
+const TaskStats = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120px;
+`;
+
+const TaskNumber = styled.div`
+  font-size: 96px;
+  font-weight: 700;
+  color: #6d6d6d;
+`;
+
+const TaskStatus = styled.p``;
 
 type Props = { tasks: TaskType[] };
 
@@ -28,26 +50,47 @@ export default function Dashboard(props: Props) {
 
   const router = useRouter();
 
-  function handleNewTask(event: Event) {
-    event.preventDefault();
-    router.push('/tasks/new');
-  }
-
   return (
-    <Container>
+    <AppContainer>
       <Heading1 data-cy="page-home-heading">Dashboard</Heading1>
       <Text>
-        Hi, {firstName}! You are logged in and ready to start. Add a new task to
-        get started.
+        Hi, {firstName}! What a great day to be prodictive! These are your
+        current stats and easy first actions to get started on your day.
       </Text>
-      <Text>
-        You have {taskCount} tasks in your logs. Of those, {doneTasks} are done
-        and {openTasks} are open.
-      </Text>
-      <Button onClick={(event: Event) => handleNewTask(event)}>
+      <TaskStatContainer>
+        <TaskStats>
+          <TaskNumber>{taskCount}</TaskNumber>
+          <TaskStatus>overall tasks</TaskStatus>
+        </TaskStats>
+        <TaskStats>
+          <TaskNumber>{openTasks}</TaskNumber>
+          <TaskStatus>are open</TaskStatus>
+        </TaskStats>
+        <TaskStats>
+          <TaskNumber>{doneTasks}</TaskNumber>
+          <TaskStatus>are done</TaskStatus>
+        </TaskStats>
+      </TaskStatContainer>
+
+      <ActionButton
+        onClick={(event: Event) => {
+          event.preventDefault();
+          router.push('/tasks/new');
+        }}
+      >
+        <Plus size={16} />
         Add new task
-      </Button>
-    </Container>
+      </ActionButton>
+      <ActionButton
+        onClick={(event: Event) => {
+          event.preventDefault();
+          router.push('/days');
+        }}
+      >
+        <Play size={16} />
+        Start day
+      </ActionButton>
+    </AppContainer>
   );
 }
 
@@ -66,14 +109,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
   return {
+    // TODO: chech if a call makes sense here of if it would be better to just
+    // use the tasks prop. If the call is done here, dashboard page needs to be dynamic
+    /*   const tasks = await getTasksByProfileId(Number(context.query.profileId));
+      props: { tasks: tasks },
+   */
     props: {},
   };
-
-  // TODO: chech if a call makes sense here of if it would be better to just
-  // use the tasks prop. If the call is done here, dashboard page needs to be dynamic
-  /*   const tasks = await getTasksByProfileId(Number(context.query.profileId));
-
-  return {
-    props: { tasks: tasks },
-  }; */
 }

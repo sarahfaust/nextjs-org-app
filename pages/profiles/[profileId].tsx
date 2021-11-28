@@ -1,40 +1,20 @@
-import styled from '@emotion/styled';
 import { GetServerSidePropsContext } from 'next';
 import { useState } from 'react';
-// import { useRouter } from 'next/dist/client/router';
-import { Button } from '../../components/Button';
-import { Container, Heading1 } from '../../styles/styles';
+import { Edit2, Save, X } from 'react-feather';
+import { ActionButton } from '../../components/ActionButton';
+import {
+  AppContainer,
+  ButtonRow,
+  Heading1,
+  ProfileForm,
+  ProfileInput,
+  ProfileLabel,
+} from '../../styles/styles';
 import {
   getTimeStringFromDateObj,
   setTimeInDateObj,
 } from '../../util/date-time';
 import { Errors, ProfileType } from '../../util/types';
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-width: 640px;
-`;
-
-const Label = styled.label`
-  margin-bottom: 6px;
-  font-family: inherit;
-  font-weight: 400;
-`;
-
-const Input = styled.input`
-  margin-bottom: 24px;
-  padding: 8px;
-  height: 36px;
-  min-width: 240px;
-  font-family: inherit;
-  &:disabled {
-    background-color: #f9f9f9;
-    border: 1px solid darkgrey;
-    border-radius: 2px;
-  }
-`;
 
 type Props = { profile: ProfileType };
 
@@ -51,8 +31,7 @@ export default function Profile(props: Props) {
   );
   const [errors, setErrors] = useState<Errors>([]);
 
-  function toggleEdit(event: Event) {
-    event.preventDefault();
+  function toggleEdit() {
     setIsEdit((prev) => !prev);
   }
 
@@ -79,40 +58,50 @@ export default function Profile(props: Props) {
       return;
     }
 
-    toggleEdit(event);
+    toggleEdit();
+  }
+
+  function discardChanges(event: Event) {
+    event.preventDefault();
+    setFirstName(props.profile.firstName);
+    setLastName(props.profile.lastName);
+    setLocation(props.profile.location);
+    setTimeStart(getTimeStringFromDateObj(new Date(props.profile.timeStart)));
+    setTimeEnd(getTimeStringFromDateObj(new Date(props.profile.timeEnd)));
+    toggleEdit();
   }
 
   return (
-    <Container>
-      <Form>
+    <AppContainer>
+      <ProfileForm>
         <Heading1>Profile settings</Heading1>
-        <Label>First name</Label>
-        <Input
+        <ProfileLabel>First name</ProfileLabel>
+        <ProfileInput
           disabled={isEdit ? false : true}
           value={firstName}
           onChange={(event) => setFirstName(event.currentTarget.value)}
         />
-        <Label>Last name</Label>
-        <Input
+        <ProfileLabel>Last name</ProfileLabel>
+        <ProfileInput
           disabled={isEdit ? false : true}
           value={lastName}
           onChange={(event) => setLastName(event.currentTarget.value)}
         />
-        <Label>Location</Label>
-        <Input
+        <ProfileLabel>Location</ProfileLabel>
+        <ProfileInput
           disabled={isEdit ? false : true}
           value={location}
           onChange={(event) => setLocation(event.currentTarget.value)}
         />
-        <Label>I start at</Label>
-        <Input
+        <ProfileLabel>I start at</ProfileLabel>
+        <ProfileInput
           type="time"
           disabled={isEdit ? false : true}
           value={timeStart}
           onChange={(event) => setTimeStart(event.currentTarget.value)}
         />
-        <Label>I finish at</Label>
-        <Input
+        <ProfileLabel>I finish at</ProfileLabel>
+        <ProfileInput
           type="time"
           disabled={isEdit ? false : true}
           value={timeEnd}
@@ -127,21 +116,24 @@ export default function Profile(props: Props) {
         )}
 
         {isEdit ? (
-          <>
-            <Button onClick={(event: Event) => updateProfile(event)}>
+          <ButtonRow>
+            <ActionButton onClick={(event: Event) => updateProfile(event)}>
+              <Save size={16} />
               Save changes
-            </Button>
-            <Button onClick={(event: Event) => toggleEdit(event)}>
+            </ActionButton>
+            <ActionButton onClick={(event: Event) => discardChanges(event)}>
+              <X size={16} />
               Discard changes
-            </Button>
-          </>
+            </ActionButton>
+          </ButtonRow>
         ) : (
-          <Button onClick={(event: Event) => toggleEdit(event)}>
+          <ActionButton onClick={toggleEdit}>
+            <Edit2 size={16} />
             Edit profile
-          </Button>
+          </ActionButton>
         )}
-      </Form>
-    </Container>
+      </ProfileForm>
+    </AppContainer>
   );
 }
 

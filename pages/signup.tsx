@@ -1,39 +1,24 @@
-import styled from '@emotion/styled';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
+import Link from 'next/link';
 import { useLayoutEffect, useRef, useState } from 'react';
+import { AlertTriangle } from 'react-feather';
 import { Button } from '../components/Button';
 import {
   Container,
   ErrorCard,
   ErrorMessage,
   Heading2,
-  LoginCard,
+  LogCard,
+  LogForm,
+  LogInput,
+  LogLabel,
+  LogLink,
+  LogText,
 } from '../styles/styles';
 import { useAuthContext } from '../util/auth-context';
 import { Errors } from '../util/types';
 import { SignupResponse } from './api/signup';
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-width: 640px;
-`;
-
-const Label = styled.label`
-  margin-bottom: 6px;
-  font-family: inherit;
-  font-weight: 400;
-`;
-
-const Input = styled.input`
-  margin-bottom: 24px;
-  padding: 8px;
-  height: 36px;
-  min-width: 240px;
-  font-family: inherit;
-`;
 
 type Props = { csrfToken: string };
 
@@ -77,26 +62,34 @@ export default function Signup(props: Props) {
 
   return (
     <Container>
-      <LoginCard>
+      <LogCard>
         <Heading2 data-cy="page-backend-heading">Sign up</Heading2>
-        <Form>
-          <Label htmlFor="username">Username</Label>
-          <Input
+        <LogForm>
+          <LogLabel htmlFor="username">Username</LogLabel>
+          <LogInput
             id="username"
             name="username"
             value={username}
             onChange={(event) => setUsername(event.currentTarget.value)}
           />
-          <Label htmlFor="password">Password</Label>
-          <Input
+          <LogLabel htmlFor="password">Password</LogLabel>
+          <LogInput
             id="password"
             name="password"
             type="password"
             value={password}
             onChange={(event) => setPassword(event.currentTarget.value)}
           />
+          <LogText>
+            Already have an account? Click here to{' '}
+            <Link href="/login" passHref>
+              <LogLink>log in</LogLink>
+            </Link>
+            .
+          </LogText>
           {errors.length > 0 && (
             <ErrorCard>
+              <AlertTriangle strokeWidth="1.5px" color="firebrick" />
               {errors.map((error) => (
                 <ErrorMessage key={`error-${error.message}`}>
                   {error.message}
@@ -105,8 +98,8 @@ export default function Signup(props: Props) {
             </ErrorCard>
           )}
           <Button onClick={(event: Event) => signUp(event)}>Sign up</Button>
-        </Form>
-      </LoginCard>
+        </LogForm>
+      </LogCard>
     </Container>
   );
 }

@@ -15,7 +15,7 @@ const Content = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
 `;
 
 const Main = styled.main`
@@ -29,6 +29,7 @@ const Main = styled.main`
 type Props = {
   tasks: TaskType[];
   children: JSX.Element;
+  updateTasks: () => void;
 };
 
 export default function Layout(props: Props) {
@@ -38,7 +39,7 @@ export default function Layout(props: Props) {
     <LayoutContainer>
       {hasAuth && (
         <>
-          <Sidebar tasks={props.tasks} />
+          <Sidebar tasks={props.tasks} updateTasks={props.updateTasks} />
           <Content>
             <Main>{props.children}</Main>
           </Content>

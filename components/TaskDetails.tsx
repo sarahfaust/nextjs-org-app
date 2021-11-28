@@ -19,10 +19,10 @@ const Card = styled.div`
   flex-direction: column;
   width: 560px;
   border-radius: 4px;
+  border: 1px solid darkgrey;
   padding: 12px;
   margin-bottom: 12px;
-  background-color: #f1f1f1;
-  box-shadow: rgba(12, 12, 12, 0.25) 1px 1px 2px;
+  background-color: #f7f7f7;
 `;
 
 const InputLine = styled.div`
@@ -35,7 +35,7 @@ const InputLine = styled.div`
   margin-bottom: 6px;
   width: 100%;
   &:hover {
-    background-color: #fafafa;
+    background-color: #ffffff;
   }
 `;
 
@@ -48,22 +48,23 @@ const Input = styled.input`
   font-family: inherit;
   font-size: 18px;
   &:focus {
-    background-color: #fafafa;
+    background-color: #ffffff;
     border: 1px solid white;
   }
   &:hover {
-    background-color: #fafafa;
+    background-color: #ffffff;
   }
 `;
 
 const IconButton = styled.button`
+  display: flex;
+  align-items: center;
   background-color: transparent;
-  color: none;
   border: none;
   border-radius: 8px;
   padding: 6px;
   &:hover {
-    background-color: #fafafa;
+    background-color: #ffffff;
   }
 `;
 
@@ -89,6 +90,7 @@ export default function TaskDetails(props: Props) {
   const [isToday, setIsToday] = useState(false);
   const [errors, setErrors] = useState<Errors>([]);
   const [taskNameError, setTaskNameError] = useState('');
+  // const [isEdited, setIsEdited] = useState(false);
   const [newSubtask, setNewSubtask] = useState(false);
   const router = useRouter();
 
@@ -101,6 +103,8 @@ export default function TaskDetails(props: Props) {
       setNewSubtask(false);
     }
   }, [props.task]);
+
+  // useEffect(() => {}, [isEdited]);
 
   async function saveTask(event: MouseEvent) {
     event.preventDefault();
@@ -200,6 +204,7 @@ export default function TaskDetails(props: Props) {
                 aria-hidden="true"
                 focusable="false"
                 strokeWidth="1px"
+                color="limegreen"
               />
             </IconButton>
           ) : (
@@ -211,7 +216,12 @@ export default function TaskDetails(props: Props) {
                 setIsDone((prev) => !prev);
               }}
             >
-              <Circle aria-hidden="true" focusable="false" strokeWidth="1px" />
+              <Circle
+                aria-hidden="true"
+                focusable="false"
+                strokeWidth="1px"
+                color="firebrick"
+              />
             </IconButton>
           )}
         </InputLine>

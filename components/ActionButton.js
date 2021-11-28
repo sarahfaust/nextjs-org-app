@@ -1,20 +1,22 @@
 import styled from '@emotion/styled';
 
 const ButtonStyle = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 6px;
   background-color: lightblue;
   color: #292f36;
-  margin: ${(props) => props.margin};
-  padding: 12px 24px;
+  margin: 0 12px 12px 0;
+  padding: 6px 12px;
   border: 2px solid lightblue;
-  border-radius: 20px;
+  border-radius: 12px;
   min-width: 40px;
   min-height: 40px;
+  font: inherit;
   font-weight: 600;
-  font-family: inherit;
-  font-size: 16px;
   transition: 300ms;
   &:hover {
-    transform: scale(1.05);
+    background-color: transparent;
   }
   &:active {
     transform: scale(0.99);
@@ -24,7 +26,7 @@ const ButtonStyle = styled.button`
   }
 `;
 
-export function Button(props) {
+export function ActionButton(props) {
   return (
     <ButtonStyle
       onClick={props.onClick}

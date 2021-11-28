@@ -1,34 +1,18 @@
-import styled from '@emotion/styled';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import { useState } from 'react';
 // import { useRouter } from 'next/dist/client/router';
 import { Button } from '../../components/Button';
-import { Container, Heading1 } from '../../styles/styles';
+import {
+  AppContainer,
+  Heading1,
+  ProfileForm,
+  ProfileInput,
+  ProfileLabel,
+} from '../../styles/styles';
 import { useAuthContext } from '../../util/auth-context';
 import { setTimeInDateObj } from '../../util/date-time';
 import { Errors } from '../../util/types';
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-width: 640px;
-`;
-
-const Label = styled.label`
-  margin-bottom: 6px;
-  font-family: inherit;
-  font-weight: 400;
-`;
-
-const Input = styled.input`
-  margin-bottom: 24px;
-  padding: 8px;
-  height: 36px;
-  min-width: 240px;
-  font-family: inherit;
-`;
 
 type Props = { userId: number };
 
@@ -75,32 +59,32 @@ export default function NewProfile(props: Props) {
   }
 
   return (
-    <Container>
-      <Form>
+    <AppContainer>
+      <ProfileForm>
         <Heading1>Profile settings</Heading1>
-        <Label>First name</Label>
-        <Input
+        <ProfileLabel>First name</ProfileLabel>
+        <ProfileInput
           value={firstName}
           onChange={(event) => setFirstName(event.currentTarget.value)}
         />
-        <Label>Last name</Label>
-        <Input
+        <ProfileLabel>Last name</ProfileLabel>
+        <ProfileInput
           value={lastName}
           onChange={(event) => setLastName(event.currentTarget.value)}
         />
-        <Label>Location</Label>
-        <Input
+        <ProfileLabel>Location</ProfileLabel>
+        <ProfileInput
           value={location}
           onChange={(event) => setLocation(event.currentTarget.value)}
         />
-        <Label>I start at</Label>
-        <Input
+        <ProfileLabel>I start at</ProfileLabel>
+        <ProfileInput
           type="time"
           value={timeStart}
           onChange={(event) => setTimeStart(event.currentTarget.value)}
         />
-        <Label>I finish at</Label>
-        <Input
+        <ProfileLabel>I finish at</ProfileLabel>
+        <ProfileInput
           type="time"
           value={timeEnd}
           onChange={(event) => setTimeEnd(event.currentTarget.value)}
@@ -115,8 +99,8 @@ export default function NewProfile(props: Props) {
         <Button onClick={(event: Event) => createProfile(event)}>
           Get started
         </Button>
-      </Form>
-    </Container>
+      </ProfileForm>
+    </AppContainer>
   );
 }
 
