@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
 import { GetServerSidePropsContext } from 'next';
-// import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useState } from 'react';
 import { Button } from '../components/Button';
-import { Container, Heading1 } from '../styles/styles';
+import { AppContainer, Heading1 } from '../styles/styles';
 import { useAuthContext } from '../util/auth-context';
 import { TaskType } from '../util/types';
 
@@ -34,7 +33,7 @@ export default function Dashboard(props: Props) {
   }
 
   return (
-    <Container>
+    <AppContainer>
       <Heading1 data-cy="page-home-heading">Dashboard</Heading1>
       <Text>
         Hi, {firstName}! You are logged in and ready to start. Add a new task to
@@ -47,7 +46,7 @@ export default function Dashboard(props: Props) {
       <Button onClick={(event: Event) => handleNewTask(event)}>
         Add new task
       </Button>
-    </Container>
+    </AppContainer>
   );
 }
 
@@ -66,14 +65,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
   return {
+    // TODO: chech if a call makes sense here of if it would be better to just
+    // use the tasks prop. If the call is done here, dashboard page needs to be dynamic
+    /*   const tasks = await getTasksByProfileId(Number(context.query.profileId));
+      props: { tasks: tasks },
+   */
     props: {},
   };
-
-  // TODO: chech if a call makes sense here of if it would be better to just
-  // use the tasks prop. If the call is done here, dashboard page needs to be dynamic
-  /*   const tasks = await getTasksByProfileId(Number(context.query.profileId));
-
-  return {
-    props: { tasks: tasks },
-  }; */
 }

@@ -11,7 +11,6 @@ const ButtonStyle = styled.button`
   min-height: 40px;
   font-weight: 600;
   font-family: inherit;
-  font-size: 16px;
   transition: 300ms;
   &:hover {
     transform: scale(1.1);

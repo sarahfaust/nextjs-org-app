@@ -4,7 +4,7 @@ import { useRouter } from 'next/dist/client/router';
 import { useState } from 'react';
 // import { useRouter } from 'next/dist/client/router';
 import { Button } from '../../components/Button';
-import { Container, Heading1 } from '../../styles/styles';
+import { AppContainer, Heading1 } from '../../styles/styles';
 import { useAuthContext } from '../../util/auth-context';
 import { setTimeInDateObj } from '../../util/date-time';
 import { Errors } from '../../util/types';
@@ -13,7 +13,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  min-width: 640px;
+  width: 100%;
 `;
 
 const Label = styled.label`
@@ -75,7 +75,7 @@ export default function NewProfile(props: Props) {
   }
 
   return (
-    <Container>
+    <AppContainer>
       <Form>
         <Heading1>Profile settings</Heading1>
         <Label>First name</Label>
@@ -116,7 +116,7 @@ export default function NewProfile(props: Props) {
           Get started
         </Button>
       </Form>
-    </Container>
+    </AppContainer>
   );
 }
 

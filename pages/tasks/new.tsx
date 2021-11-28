@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import TaskDetails from '../../components/TaskDetails';
-import { Container } from '../../styles/styles';
+import { AppContainer } from '../../styles/styles';
 
 type Props = { profileId: number; updateTasks: () => void };
 
@@ -13,7 +13,7 @@ export default function Tasks(props: Props) {
   }
 
   return (
-    <Container>
+    <AppContainer>
       <TaskDetails
         profileId={props.profileId}
         task={null}
@@ -21,7 +21,7 @@ export default function Tasks(props: Props) {
         updateTasks={props.updateTasks}
         updateTask={updateTask}
       />
-    </Container>
+    </AppContainer>
   );
 }
 

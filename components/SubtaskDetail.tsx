@@ -33,6 +33,7 @@ const Input = styled.input`
   padding: 8px;
   font-family: inherit;
   font-size: 16px;
+  font-weight: 300;
   &:focus {
     background-color: #fafafa;
     border: 1px solid white;
@@ -157,6 +158,7 @@ export default function SubtaskDetail(props: Props) {
               focusable="false"
               strokeWidth="1px"
               size={20}
+              color="limegreen"
             />
           </IconButton>
         ) : (
@@ -172,6 +174,7 @@ export default function SubtaskDetail(props: Props) {
               focusable="false"
               strokeWidth="1px"
               size={20}
+              color="firebrick"
             />
           </IconButton>
         )}

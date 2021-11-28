@@ -1,36 +1,80 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { Calendar, Home, LogOut, Plus, User } from 'react-feather';
 import { useAuthContext } from '../util/auth-context';
 import { TaskType } from '../util/types';
-import TaskList from './TaskList';
+import TaskListItem from './TaskListItem';
 
 const Container = styled.div`
   display: flex;
+  flex: 0 0 480px;
+`;
+
+const NavContainer = styled.div`
+  display: flex;
   flex-direction: column;
-  flex: 0 0 280px;
-  background-color: #e9e9e9;
-  padding: 2rem;
+  justify-content: space-between;
+  padding: 1.2rem;
+  background-color: #d3d3d3;
+  border-right: 1px solid #b8b8b8;
+`;
+
+const TopNav = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-gap: 12px;
+`;
+
+const NavLink = styled.a`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  background-color: #c5c5c5;
+  color: #333333;
+  border-radius: 24px;
+  transition: 300ms;
+  &:hover {
+    border-radius: 20px;
+    scale: 1.1;
+    background-color: lightblue;
+  }
+`;
+
+const TasksContainer = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: #e0e0e0;
+  padding: 1.5rem;
   overflow-y: scroll;
   overflow-x: hidden;
 `;
 
-const Heading = styled.h2`
+const HeadingContainer = styled.h2`
   padding: 24px 0 12px;
   margin-bottom: 12px;
-  font-size: 1.3rem;
-  font-weight: 400;
-  text-transform: uppercase;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid #b9b9b9;
 `;
 
-const Navigation = styled.nav``;
-const NavLink = styled.a``;
+const Heading = styled.a`
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: #3b3b3b;
+  text-transform: uppercase;
+`;
 
-type Props = { tasks: TaskType[] };
+const TaskListContainer = styled.div`
+  width: 100%;
+`;
+
+type Props = { tasks: TaskType[]; updateTasks: () => void };
 
 export default function Sidebar(props: Props) {
-  const { hasAuth, profileId, firstName } = useAuthContext();
+  const { profileId } = useAuthContext();
   const [personalLog, setPersonalLog] = useState<TaskType[]>([]);
   const [dayLog, setDayLog] = useState<TaskType[]>([]);
 
@@ -41,31 +85,96 @@ export default function Sidebar(props: Props) {
 
   return (
     <Container>
-      <Navigation>
-        {hasAuth && (
-          <>
-            <Link href={`/profiles/${profileId}`} passHref>
-              <NavLink data-cy="header-profile-link">Profile</NavLink>
-            </Link>
-            <Link href={`/profiles/${profileId}`} passHref>
-              <NavLink data-cy="header-username-link">
-                Username: {firstName}
-              </NavLink>
-            </Link>
-            <NavLink href="/logout" data-cy="header-logout-link">
-              Logout
+      <NavContainer>
+        <TopNav>
+          <Link href="/dashboard" passHref>
+            <NavLink aria-label="Dashboard" data-cy="nav-profile-link">
+              <Home
+                aria-hidden="true"
+                focusable="false"
+                strokeWidth="1px"
+                size={32}
+              />
             </NavLink>
-          </>
-        )}
-      </Navigation>
-      <Heading>
-        <Link href="/tasks">
-          <a>Personal Log</a>
-        </Link>
-      </Heading>
-      <TaskList tasks={personalLog} />
-      <Heading>Day Log</Heading>
-      <TaskList tasks={dayLog} />
+          </Link>
+          <Link href={`/profiles/${profileId}`} passHref>
+            <NavLink aria-label="Profile" data-cy="nav-profile-link">
+              <User
+                aria-hidden="true"
+                focusable="false"
+                strokeWidth="1px"
+                size={32}
+              />
+            </NavLink>
+          </Link>
+          <Link href="/days" passHref>
+            <NavLink aria-label="New day" data-cy="nav-newday-link">
+              <Calendar
+                aria-hidden="true"
+                focusable="false"
+                strokeWidth="1px"
+                size={32}
+              />
+            </NavLink>
+          </Link>
+          <Link href="/tasks/new" passHref>
+            <NavLink aria-label="New task" data-cy="nav-newtask-link">
+              <Plus
+                aria-hidden="true"
+                focusable="false"
+                strokeWidth="1px"
+                size={32}
+              />
+            </NavLink>
+          </Link>
+        </TopNav>
+        <NavLink
+          href="/logout"
+          aria-label="Logout"
+          data-cy="header-logout-link"
+        >
+          <LogOut
+            aria-hidden="true"
+            focusable="false"
+            strokeWidth="1px"
+            size={32}
+          />
+        </NavLink>
+      </NavContainer>
+      <TasksContainer>
+        <HeadingContainer>
+          <Link href="/tasks" passHref>
+            <Heading>Personal Log</Heading>
+          </Link>
+        </HeadingContainer>
+        <TaskListContainer>
+          <ul>
+            {personalLog.map((task) => (
+              <TaskListItem
+                key={task.id}
+                task={task}
+                updateTasks={props.updateTasks}
+              />
+            ))}
+          </ul>
+        </TaskListContainer>
+        <HeadingContainer>
+          <Link href="/tasks" passHref>
+            <Heading>Day Log</Heading>
+          </Link>
+        </HeadingContainer>
+        <TaskListContainer>
+          <ul>
+            {dayLog.map((task) => (
+              <TaskListItem
+                key={task.id}
+                task={task}
+                updateTasks={props.updateTasks}
+              />
+            ))}
+          </ul>
+        </TaskListContainer>
+      </TasksContainer>
     </Container>
   );
 }

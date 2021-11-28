@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const ButtonStyle = styled.button`
-  background-color: lightblue;
+  background-color: transparent;
   color: #292f36;
   margin: ${(props) => props.margin};
   padding: 12px 24px;
@@ -24,7 +24,7 @@ const ButtonStyle = styled.button`
   }
 `;
 
-export function Button(props) {
+export function BorderButton(props) {
   return (
     <ButtonStyle
       onClick={props.onClick}
