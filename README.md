@@ -1,34 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Personal Organization App
+"Mindfull" is a mindfulness-based agile-inspired home office companion that helps you plan and realize your balanced work-life day and gives positive input. Mindfull is a web application built with Next.js, React, TypeScript, Emotion, HTML, CSS and PostgreSQL.
 
-## Getting Started
+## Features
+- [x] Users can create accounts with their name and work day stats.
+- [x] Users can create, edit and delete tasks.
+- [x] Tasks are added to a personal backlog after creation.
+- [x] Users can add subtasks to a task.
+- [ ] Users can write up a _warm up_ form (combination of a Scrum sprint planning and daily).
+- [x] Users can move tasks from the personal backlog to their workday backlog.
+- [ ] Users can enter and change start, end and break times for their work day.
+- [ ] The app reminds users of break and end times by using a personalized popup.
+- [ ] Users can write up a _wind down_ form (combination of Scrum review and retro).
+- [ ] A day is saved with done tasks, warm up and wind down notes.
 
-First, run the development server:
+## Stretch Features
+- [ ] Users can define types of breaks (drink, food, move, outdoor).
+- [ ] Users can add locations and favorite foods and activities to their account.
+- [ ] Users get motivating feedback after completing the warm up and wind down.
+- [ ] Users can add colleague names and avatars to personalize the reminders.
+- [ ] The app personalizes feedback to the user depending on location, favorite foods and activities.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### Technologies
+The application will be built using the following technologies:
+- Next.js
+- React
+- TypeScript
+- PostgreSQL with Postgres.js
+- Emotion Styled
+- HTML
+- CSS
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Services
+The application is deployed using the following services:
+- Heroku
+- Heroku PostrgreSQL
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### External dependencies
+- Heroku
