@@ -89,13 +89,16 @@ export type IncentiveType = {
   name: string;
 };
 
-export type BreakType = {
-  id: number;
+export type CreateBreakType = {
   profileId: number;
-  incentiveTypeId: number;
-  incentiveId: number;
-  timeStart: TimeRanges;
-  timeEnd: TimeRanges;
+  incentiveTypeId: number | null;
+  incentiveId: number | null;
+  timeStart: Date;
+  timeEnd: Date;
+};
+
+export type BreakType = CreateBreakType & {
+  id: number;
 };
 
 export type Errors = {

@@ -3,8 +3,9 @@ import { useRouter } from 'next/dist/client/router';
 import { useState } from 'react';
 // import { useRouter } from 'next/dist/client/router';
 import { Button } from '../../components/Button';
+import ErrorCard from '../../components/ErrorCard';
 import {
-  AppContainer,
+  Container,
   Heading1,
   ProfileForm,
   ProfileInput,
@@ -23,8 +24,6 @@ export default function NewProfile(props: Props) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [location, setLocation] = useState('');
-  const [timeStart, setTimeStart] = useState('');
-  const [timeEnd, setTimeEnd] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
 
   async function createProfile(event: Event) {
@@ -39,8 +38,8 @@ export default function NewProfile(props: Props) {
         firstName: firstName,
         lastName: lastName,
         location: location,
-        timeStart: setTimeInDateObj(timeStart),
-        timeEnd: setTimeInDateObj(timeEnd),
+        timeStart: setTimeInDateObj('08:00'),
+        timeEnd: setTimeInDateObj('17:00'),
       }),
     });
 
@@ -59,7 +58,7 @@ export default function NewProfile(props: Props) {
   }
 
   return (
-    <AppContainer>
+    <Container>
       <ProfileForm>
         <Heading1>Profile settings</Heading1>
         <ProfileLabel>First name</ProfileLabel>
@@ -77,30 +76,12 @@ export default function NewProfile(props: Props) {
           value={location}
           onChange={(event) => setLocation(event.currentTarget.value)}
         />
-        <ProfileLabel>I start at</ProfileLabel>
-        <ProfileInput
-          type="time"
-          value={timeStart}
-          onChange={(event) => setTimeStart(event.currentTarget.value)}
-        />
-        <ProfileLabel>I finish at</ProfileLabel>
-        <ProfileInput
-          type="time"
-          value={timeEnd}
-          onChange={(event) => setTimeEnd(event.currentTarget.value)}
-        />
-        {errors.length > 0 && (
-          <div>
-            {errors.map((error) => (
-              <div key={`error-${error.message}`}>{error.message}</div>
-            ))}
-          </div>
-        )}
+        {errors.length > 0 && <ErrorCard errors={errors} />}
         <Button onClick={(event: Event) => createProfile(event)}>
           Get started
         </Button>
       </ProfileForm>
-    </AppContainer>
+    </Container>
   );
 }
 

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Calendar, Home, LogOut, Plus, User } from 'react-feather';
+import { Archive, Calendar, Home, LogOut, Plus, User } from 'react-feather';
 import { useAuthContext } from '../util/auth-context';
 import { TaskType } from '../util/types';
 import TaskListItem from './TaskListItem';
@@ -117,6 +117,16 @@ export default function Sidebar(props: Props) {
                 focusable="false"
                 strokeWidth="1px"
                 size={32}
+              />
+            </NavLink>
+          </Link>
+          <Link href="/days/archive" passHref>
+            <NavLink aria-label="Archive" data-cy="nav-archive-link">
+              <Archive
+                aria-hidden="true"
+                focusable="false"
+                strokeWidth="1px"
+                size={28}
               />
             </NavLink>
           </Link>

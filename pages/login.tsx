@@ -2,13 +2,11 @@ import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
 import { useLayoutEffect, useRef, useState } from 'react';
-import { AlertTriangle } from 'react-feather';
 import { Button } from '../components/Button';
+import ErrorCard from '../components/ErrorCard';
 import {
   Container,
-  ErrorCard,
-  ErrorMessage,
-  Heading2,
+  Heading1,
   LogCard,
   LogForm,
   LogInput,
@@ -47,7 +45,7 @@ export default function Login() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username: username,
+        username: username.toLowerCase,
         password: password,
       }),
     });
@@ -69,7 +67,7 @@ export default function Login() {
   return (
     <Container>
       <LogCard>
-        <Heading2 data-cy="page-backend-heading">Log in</Heading2>
+        <Heading1 data-cy="page-backend-heading">Log in</Heading1>
         <LogForm>
           <LogLabel htmlFor="username">Username</LogLabel>
           <LogInput
@@ -94,16 +92,7 @@ export default function Login() {
             </Link>
             .
           </LogText>
-          {errors.length > 0 && (
-            <ErrorCard>
-              <AlertTriangle strokeWidth="1.5px" color="firebrick" />
-              {errors.map((error) => (
-                <ErrorMessage key={`error-${error.message}`}>
-                  {error.message}
-                </ErrorMessage>
-              ))}
-            </ErrorCard>
-          )}
+          {errors.length > 0 && <ErrorCard errors={errors} margin="24px" />}
           <Button onClick={(event: Event) => logIn(event)}>Log in</Button>
         </LogForm>
       </LogCard>

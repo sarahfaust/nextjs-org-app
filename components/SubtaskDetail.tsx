@@ -3,12 +3,13 @@ import { MouseEvent, useEffect, useState } from 'react';
 import { Check, Circle, Save, Trash } from 'react-feather';
 import { SubtasksResponse } from '../pages/api/tasks/[taskId]/subtasks';
 import { SubtaskResponse } from '../pages/api/tasks/[taskId]/subtasks/[subtaskId]';
-import { ErrorCard, ErrorMessage, Form, HiddenButton } from '../styles/styles';
+import { Form, HiddenButton } from '../styles/styles';
 import { Errors, SubtaskType } from '../util/types';
+import ErrorCard from './ErrorCard';
 
 const SubtaskRow = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 `;
 
 const InputLine = styled.div`
@@ -61,14 +62,13 @@ const Controls = styled.div`
 type Props = {
   subtask: SubtaskType | null;
   taskId: number;
-  updateTasks: () => void;
+  updateTask: () => void;
 };
 
 export default function SubtaskDetail(props: Props) {
   const [subtaskName, setSubtaskName] = useState('');
   const [isDone, setIsDone] = useState(false);
   const [errors, setErrors] = useState<Errors>([]);
-  const [subtaskNameError, setSubtaskNameError] = useState('');
 
   useEffect(() => {
     if (props.subtask) {
@@ -81,8 +81,7 @@ export default function SubtaskDetail(props: Props) {
     event.preventDefault();
 
     if (!subtaskName || subtaskName.trim().length === 0) {
-      setSubtaskNameError('Please enter a subtask name.');
-      return;
+      return setErrors([{ message: 'Please enter a subtask name.' }]);
     }
 
     const response = await fetch(
@@ -112,7 +111,7 @@ export default function SubtaskDetail(props: Props) {
       return;
     }
 
-    props.updateTasks();
+    props.updateTask();
   }
 
   async function deleteSubtask(event: MouseEvent) {
@@ -136,7 +135,7 @@ export default function SubtaskDetail(props: Props) {
         return;
       }
 
-      props.updateTasks();
+      props.updateTask();
     }
   }
 
@@ -221,20 +220,7 @@ export default function SubtaskDetail(props: Props) {
           )}
         </Controls>
       </InputLine>
-      {subtaskNameError && (
-        <ErrorCard>
-          <ErrorMessage>{subtaskNameError}</ErrorMessage>
-        </ErrorCard>
-      )}
-      {errors.length > 0 && (
-        <ErrorCard>
-          {errors.map((error) => (
-            <ErrorMessage key={`error-${error.message}`}>
-              {error.message}
-            </ErrorMessage>
-          ))}
-        </ErrorCard>
-      )}
+      {errors.length > 0 && <ErrorCard errors={errors} margin="6px" />}
     </SubtaskRow>
   );
 }

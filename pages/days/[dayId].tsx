@@ -1,8 +1,9 @@
 import { GetServerSidePropsContext } from 'next';
-import { useState } from 'react';
-import ProfileSettings from '../../components/ProfileSettings';
+import { useEffect, useState } from 'react';
 import { TabButton } from '../../components/TabButton';
 import TimeSettings from '../../components/TimeSettings';
+import Warmup from '../../components/Warmup';
+import Winddown from '../../components/Winddown';
 import {
   AppContainer,
   Heading1,
@@ -10,20 +11,29 @@ import {
   TabContent,
   TabHeader,
 } from '../../styles/styles';
-import { ProfileType } from '../../util/types';
+import { ProfileType, TaskType } from '../../util/types';
 
-type Props = { profile: ProfileType };
+type Props = {
+  profile: ProfileType;
+  tasks: TaskType[];
+};
 
-export default function Profile(props: Props) {
+export default function Day(props: Props) {
+  const [dayTasks, setDayTasks] = useState<TaskType[]>([]);
   const [activeTab, setActiveTab] = useState(1);
 
   function changeActiveTab(id: number) {
     setActiveTab(id);
   }
 
+  // set current tasks to be used when saving to day_task table
+  useEffect(() => {
+    setDayTasks(props.tasks.filter((task) => task.isToday));
+  }, [props.tasks]);
+
   return (
     <AppContainer>
-      <Heading1>Settings</Heading1>
+      <Heading1 data-cy="page-day-heading">Day</Heading1>
       <TabContainer>
         <TabHeader>
           <TabButton
@@ -31,28 +41,30 @@ export default function Profile(props: Props) {
             isActive={activeTab === 1 ? true : false}
             dataCy="tab-button-day-1"
           >
-            Times
+            Warmup
           </TabButton>
           <TabButton
             onClick={() => changeActiveTab(2)}
             isActive={activeTab === 2 ? true : false}
             dataCy="tab-button-day-2"
           >
-            Profile
+            Settings
           </TabButton>
-          {/*           <TabButton
+          <TabButton
             onClick={() => changeActiveTab(3)}
             isActive={activeTab === 3 ? true : false}
             dataCy="tab-button-day-3"
           >
-            Security
-          </TabButton> */}
+            Winddown
+          </TabButton>
         </TabHeader>
         <TabContent>
-          {activeTab === 1 && (
+          {activeTab === 0 && { dayTasks }}
+          {activeTab === 1 && <Warmup />}
+          {activeTab === 2 && (
             <TimeSettings profile={props.profile} dayId={0} />
           )}
-          {activeTab === 2 && <ProfileSettings profile={props.profile} />}
+          {activeTab === 3 && <Winddown />}
         </TabContent>
       </TabContainer>
     </AppContainer>
@@ -60,8 +72,9 @@ export default function Profile(props: Props) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { getValidatedUserBySessionToken, getProfileByProfileId } =
-    await import('../../util/database');
+  const { getValidatedUserBySessionToken, getProfileByUserId } = await import(
+    '../../util/database'
+  );
 
   const sessionToken = context.req.cookies.sessionToken;
   const validatedUser = await getValidatedUserBySessionToken(sessionToken);
@@ -75,7 +88,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
-  const profile = await getProfileByProfileId(Number(context.query.profileId));
+  const profile = await getProfileByUserId(validatedUser.id);
 
   return {
     props: {

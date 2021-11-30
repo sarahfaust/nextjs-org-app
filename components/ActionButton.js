@@ -30,7 +30,6 @@ export function ActionButton(props) {
   return (
     <ButtonStyle
       onClick={props.onClick}
-      margin={props.margin}
       disabled={props.disabled}
       data-cy={props.dataCy}
     >

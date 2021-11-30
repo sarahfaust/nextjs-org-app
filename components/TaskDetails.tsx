@@ -10,8 +10,9 @@ import {
   Trash,
 } from 'react-feather';
 import { TaskResponse } from '../pages/api/tasks/[taskId]';
-import { ErrorCard, ErrorMessage, Form, HiddenButton } from '../styles/styles';
+import { Form, HiddenButton } from '../styles/styles';
 import { Errors, SubtaskType, TaskType } from '../util/types';
+import ErrorCard from './ErrorCard';
 import SubtaskDetail from './SubtaskDetail';
 
 const Card = styled.div`
@@ -89,7 +90,6 @@ export default function TaskDetails(props: Props) {
   const [isDone, setIsDone] = useState(false);
   const [isToday, setIsToday] = useState(false);
   const [errors, setErrors] = useState<Errors>([]);
-  const [taskNameError, setTaskNameError] = useState('');
   // const [isEdited, setIsEdited] = useState(false);
   const [newSubtask, setNewSubtask] = useState(false);
   const router = useRouter();
@@ -110,8 +110,7 @@ export default function TaskDetails(props: Props) {
     event.preventDefault();
 
     if (!taskName || taskName.trim().length === 0) {
-      setTaskNameError('Please enter a task name.');
-      return;
+      return setErrors([{ message: 'Please enter a task name.' }]);
     }
 
     const response = await fetch(
@@ -225,30 +224,26 @@ export default function TaskDetails(props: Props) {
             </IconButton>
           )}
         </InputLine>
-        {taskNameError && (
-          <ErrorCard>
-            <ErrorMessage>{taskNameError}</ErrorMessage>
-          </ErrorCard>
-        )}
+        {errors.length > 0 && <ErrorCard errors={errors} margin="6px" />}
       </Form>
       {props.subtasks && props.subtasks.length > 0 && taskId !== 0 && (
-        <>
+        <ul>
           {props.subtasks.map((subtask) => (
             <li key={subtask.id}>
               <SubtaskDetail
                 subtask={subtask}
                 taskId={taskId}
-                updateTasks={props.updateTask}
+                updateTask={props.updateTask}
               />
             </li>
           ))}
-        </>
+        </ul>
       )}
       {newSubtask && props.task && (
         <SubtaskDetail
           subtask={null}
           taskId={props.task.id}
-          updateTasks={props.updateTask}
+          updateTask={props.updateTask}
         />
       )}
       <Controls>
@@ -301,16 +296,6 @@ export default function TaskDetails(props: Props) {
           <Save aria-hidden="true" focusable="false" strokeWidth="1px" />
         </IconButton>
       </Controls>
-
-      {errors.length > 0 && (
-        <ErrorCard>
-          {errors.map((error) => (
-            <ErrorMessage key={`error-${error.message}`}>
-              {error.message}
-            </ErrorMessage>
-          ))}
-        </ErrorCard>
-      )}
     </Card>
   );
 }
