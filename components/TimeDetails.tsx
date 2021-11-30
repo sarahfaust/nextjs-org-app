@@ -81,9 +81,13 @@ export default function TimeDetails(props: Props) {
     if (props.break) {
       setTimeStart(getTimeStringFromDateObj(props.break.timeStart));
       setTimeEnd(getTimeStringFromDateObj(props.break.timeEnd));
+      return;
     }
     if (props.isNewBreak) {
       setIsEdit(true);
+    } else {
+      setTimeStart(getTimeStringFromDateObj(props.profile.timeStart));
+      setTimeEnd(getTimeStringFromDateObj(props.profile.timeEnd));
     }
   }, [props]);
 

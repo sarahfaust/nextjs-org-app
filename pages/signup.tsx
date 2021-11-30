@@ -55,7 +55,7 @@ export default function Signup(props: Props) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username: username.toLowerCase,
+        username: username,
         password: password,
         csrfToken: props.csrfToken,
       }),
