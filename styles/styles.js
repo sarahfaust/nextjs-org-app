@@ -33,7 +33,10 @@ export const globalStyles = css`
   input,
   h1,
   h2,
-  span {
+  span,
+  textarea,
+  button,
+  div {
     color: #292f36;
     font-size: 16px;
   }
@@ -52,16 +55,15 @@ export const componentStyle = css`
 
 export const Heading1 = styled.h1`
   margin-bottom: 36px;
-  text-transform: capitalize;
   font-size: 1.4rem;
   font-weight: 600;
-  color: #292f36;
 `;
 
 export const Heading2 = styled.h2`
-  padding-bottom: 36px;
-  font-size: 1.5rem;
-  font-weight: 500;
+  margin-bottom: 24px;
+  font-size: 18px;
+  font-weight: 400;
+  min-width: 160px;
 `;
 
 export const AppContainer = styled.section`
@@ -69,7 +71,7 @@ export const AppContainer = styled.section`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 2rem;
+  padding: 2rem 4rem;
   height: 100%;
 `;
 
@@ -80,6 +82,7 @@ export const Container = styled.section`
   align-items: flex-start;
   padding: 4rem;
   height: 100%;
+  overflow-y: scroll;
 `;
 
 // LOGIN & SIGNUP
@@ -137,8 +140,9 @@ export const ProfileForm = styled.form`
 
 export const ProfileLabel = styled.label`
   margin-bottom: 6px;
-  font-family: inherit;
+  font: inherit;
   font-weight: 400;
+  font-size: 18px;
 `;
 
 export const ProfileInput = styled.input`
@@ -163,27 +167,74 @@ export const Form = styled.form`
   width: 100%;
 `;
 
-// ERROR MESSAGES
-export const ErrorMessage = styled.p``;
-
-export const ErrorCard = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  width: 100%;
-  height: 40px;
-  padding-left: 12px;
-  margin-bottom: 24px;
-  border-radius: 4px;
-  background-color: lightpink;
-  border: 1px solid firebrick;
-`;
-
 // BUTTONS
 export const HiddenButton = styled.button`
   display: none;
 `;
 
-export const ButtonRow = styled.div`
+export const ButtonRowLeft = styled.div`
   display: flex;
+`;
+
+export const ButtonRowRight = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+// TABS
+export const TabContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: transparent;
+  margin-bottom: 24px;
+`;
+
+export const TabContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 0 0 4px 4px;
+`;
+
+export const TabHeader = styled.div`
+  display: flex;
+  gap: 24px;
+  padding-bottom: 2rem;
+  width: 100%;
+`;
+
+// TEXTAREA
+export const AreaContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+`;
+
+export const AreaColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+`;
+
+export const AreaCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+`;
+
+export const AreaLabel = styled.label`
+  width: 96px;
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 400;
+`;
+
+export const Area = styled.textarea`
+  flex-grow: 1;
+  padding: 8px;
+  font: inherit;
+  font-weight: 400;
+  border: 1px solid #c5c5c5;
+  border-radius: 2px;
 `;

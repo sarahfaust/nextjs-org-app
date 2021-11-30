@@ -2,13 +2,11 @@ import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
 import { useLayoutEffect, useRef, useState } from 'react';
-import { AlertTriangle } from 'react-feather';
 import { Button } from '../components/Button';
+import ErrorCard from '../components/ErrorCard';
 import {
   Container,
-  ErrorCard,
-  ErrorMessage,
-  Heading2,
+  Heading1,
   LogCard,
   LogForm,
   LogInput,
@@ -17,6 +15,7 @@ import {
   LogText,
 } from '../styles/styles';
 import { useAuthContext } from '../util/auth-context';
+import { emailRegex, passwordRegex } from '../util/constants';
 import { Errors } from '../util/types';
 import { SignupResponse } from './api/signup';
 
@@ -38,13 +37,25 @@ export default function Signup(props: Props) {
 
   async function signUp(event: Event) {
     event.preventDefault();
+
+    if (!emailRegex.test(username)) {
+      return setErrors([{ message: 'Please enter a valid email address.' }]);
+    }
+    if (!passwordRegex.test(password)) {
+      return setErrors([
+        {
+          message:
+            'The password must be at least 8 characters long and contain at least one of each: lowercase letter, uppercase letter, symbol, digit.',
+        },
+      ]);
+    }
     const response = await fetch('/api/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username: username,
+        username: username.toLowerCase,
         password: password,
         csrfToken: props.csrfToken,
       }),
@@ -63,12 +74,12 @@ export default function Signup(props: Props) {
   return (
     <Container>
       <LogCard>
-        <Heading2 data-cy="page-backend-heading">Sign up</Heading2>
+        <Heading1 data-cy="page-backend-heading">Sign up</Heading1>
         <LogForm>
-          <LogLabel htmlFor="username">Username</LogLabel>
+          <LogLabel htmlFor="email address">Email address</LogLabel>
           <LogInput
-            id="username"
-            name="username"
+            id="email address"
+            name="email address"
             value={username}
             onChange={(event) => setUsername(event.currentTarget.value)}
           />
@@ -87,16 +98,7 @@ export default function Signup(props: Props) {
             </Link>
             .
           </LogText>
-          {errors.length > 0 && (
-            <ErrorCard>
-              <AlertTriangle strokeWidth="1.5px" color="firebrick" />
-              {errors.map((error) => (
-                <ErrorMessage key={`error-${error.message}`}>
-                  {error.message}
-                </ErrorMessage>
-              ))}
-            </ErrorCard>
-          )}
+          {errors.length > 0 && <ErrorCard errors={errors} margin="24px" />}
           <Button onClick={(event: Event) => signUp(event)}>Sign up</Button>
         </LogForm>
       </LogCard>
